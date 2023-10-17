@@ -1,0 +1,83 @@
+/* Estilos para el menú desplegado */
+ion-menu {
+    --ion-background-color: #132CAA; /* Color de fondo del menú desplegado */
+    --ion-toolbar-background: #132CAA; /* Color de fondo de la barra de arriba */
+    --ion-text-color: #fff; /* Color de texto (letras) en el menú desplegado */
+  }
+  
+  /* Estilos para el contenido del menú desplegado */
+  ion-content.ion-padding {
+    padding: 15px; /* Añade relleno a los elementos de contenido del menú */
+    font-size: 18px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Animación de cambio de color de fondo */
+  }
+  
+  ion-content.ion-padding:hover {
+    background-color: #f0f0f0; /* Cambia el color de fondo al pasar el cursor */
+  }
+  
+  /* Estilos para el encabezado de la página principal */
+  ion-header ion-toolbar {
+    background-color: #132CAA; /* Color de fondo de la barra de arriba en la página principal */
+    color: #fff; /* Color de texto (letras) en la barra de arriba en la página principal */
+  }
+  
+  ion-title {
+    font-size: 24px; /* Tamaño de fuente del título */
+  }
+
+  ion-header {
+    --ion-background-color: #132CAA; /* Color de fondo del menú desplegado */
+    --ion-toolbar-background: #132CAA; /* Color de fondo de la barra de arriba */
+    --ion-text-color: #fff; /* Color de texto (letras) en el menú desplegado */
+  }
+
+  .background {
+    --ion-background-color: #ffffff;
+}
+
+ion-button {
+  --background: #132CAA;
+  --box-shadow: 0 0px 0px 0 #132CAA;
+    text-align:left;
+    height: 80%;
+}
+
+ion-icon {
+  padding-left: 5%;
+  width: 30px;
+  height: 30px;
+    color: #ffffff;
+}
+
+
+
+.bigtext {
+    padding-bottom: 5%;
+    font-size: 200%;
+    font: sarabun;
+    font-weight: bold;
+    color: #002138;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%; /* Ajusta el ancho según tus preferencias */
+    margin-top: 5%;
+    
+}
+
+.text { 
+    padding-top: text;
+    background: white;
+    font: sarabun;
+    font-weight: bold;
+    color: #002138; 
+    font-size: 100%;
+    white-space: normal; /* Esto permite que el texto se rompa en varias líneas */
+    word-wrap: break-word; /* Esto hace que las palabras largas se rompan si es necesario */
+}
+
+ion-row {
+  padding-right: 2%;
+  padding-left: 2%;
+  padding-top: 5%;
+}

@@ -1,0 +1,42 @@
+
+
+<ion-menu contentId="main-content" >
+  <ion-header>
+    <ion-toolbar>
+      <ion-menu-toggle>
+        <ion-menu-button></ion-menu-button>
+      </ion-menu-toggle>
+    </ion-toolbar>
+  </ion-header>
+  <ion-button class="ion-padding" (click)="goToClase()">¿Eres pasajero o conductor?.</ion-button>
+  <ion-button class="ion-padding">Registra tu viaje.</ion-button>
+  <ion-button class="ion-padding">Mira tu viaje.</ion-button>
+  <ion-button class="ion-padding">Utiliza QR.</ion-button>
+  <ion-button class="ion-padding">Funcionalidades de la app.</ion-button>
+  <ion-button class="ion-padding" (click)="goToSobreNosotros()">Sobre nosotros.</ion-button>
+  <ion-button class="ion-padding" (click)="goToInicio()"> Cerrar Sesión.</ion-button>
+</ion-menu>
+
+
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="menu-fondo"> 
+    <ion-text style="color: black;">
+       <h1 style="padding-left: 5%; width: 90%;">Bienvenido de nuevo, Usuario</h1>  <!-- Reemplazar con nombre que venga de base de datos -->
+    </ion-text>
+    <div id="mapa-principal" style="width: 90%; height: 50%;"> <!-- DIV del mapa. No tocar-->
+     </div>
+
+  </ion-content> 
+
+  
+  
+</div>

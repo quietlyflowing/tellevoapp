@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="arrow-back-outline" (click)="goToMenu()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="background">
+  <div class="bigtext"> ¿Eres Pasajero o Conductor? </div>
+
+  <ion-button class="centered-button" (click)="goToPasajero()"> Pasajero </ion-button> 
+
+  <ion-row>
+    <ion-label class="text">
+      o
+    </ion-label>
+  </ion-row>   
+
+  <ion-button class="centered-button" (click)="goToConductor()"> Conductor </ion-button>  
+</ion-content>

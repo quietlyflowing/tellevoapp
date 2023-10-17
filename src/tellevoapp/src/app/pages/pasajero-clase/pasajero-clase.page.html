@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> pasajero-clase </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="background" [fullscreen]="true">
+  <img class="logo" src="assets/img/TellevoappLogo.png" alt="Mi Imagen">
+  <div class="bigtext"> Información del pasajero </div>
+  <ion-list class="listas">
+
+      <ion-input class="text"
+      label="Dirección"
+      labelPlacement="stacked"
+      [clearOnEdit]="true"
+      placeholder="Dirección de residencia"> 
+      </ion-input>
+
+      <ion-input class="number"
+      label="Horario"
+      labelPlacement="stacked"
+      [clearOnEdit]="true"
+      placeholder="00:00 pm">
+      </ion-input>
+
+      <ion-input class="tel"
+      label="Número"
+      labelPlacement="stacked"
+      [clearOnEdit]="true"
+      placeholder="+56 9 0000 0000">
+      </ion-input>
+
+  </ion-list>
+
+  <ion-button class="centered-button" (click)="goToMenu()"> Aceptar </ion-button>  
+</ion-content>

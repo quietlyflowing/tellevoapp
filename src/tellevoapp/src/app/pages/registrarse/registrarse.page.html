@@ -1,0 +1,33 @@
+<ion-content class="background" [fullscreen]="true">
+  <img class="logo" src="assets/img/TellevoappLogo.png" alt="Mi Imagen">
+  <div class="bigtext">Iniciar Sesión</div>
+  <ion-list class="listas">
+      <ion-input class="text"
+      label="Correo Electronico"
+      labelPlacement="stacked"
+      [clearOnEdit]="true"
+      placeholder="Hola@duocuc.cl"
+      [(ngModel)] = "email"
+      > 
+      </ion-input>
+      <ion-input class="text"
+      label="Contraseña"
+      labelPlacement="stacked"
+      [clearOnEdit]="true"
+      type="password"
+      placeholder="*******************"
+      [(ngModel)] = "password"
+      >
+      </ion-input>
+      <!-- <ion-input class="text"
+      label="Confirmar Contraseña"
+      labelPlacement="stacked"
+      [clearOnEdit]="true"
+      placeholder="*******************"
+      [(ngModel)] = "confirmpassword"
+      >
+      </ion-input> -->
+  </ion-list>
+  <ion-button class="centered-button" (click)="loginUser()">Continuar</ion-button>    
+  <ion-button class="centered-button" (click)="goToRecuperar()">Recuperar contraseña</ion-button>    
+</ion-content>
