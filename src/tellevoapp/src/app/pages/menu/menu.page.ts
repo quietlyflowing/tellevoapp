@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import * as Leaflet from 'leaflet';
 import { Geolocation } from '@capacitor/geolocation';
 //import { antPath } from 'leaflet-ant-path';
-
-
+import { AuthenticationService } from 'src/app/authentication.service';
+import { BackendService } from 'src/app/backend.service';
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
@@ -20,8 +21,19 @@ export class MenuPage implements OnInit, OnDestroy {
   constructor(
     private menuController: MenuController,
     private router: Router,
-    
+    private auth: AuthenticationService,
+    private backend: BackendService,
+    private toastController: ToastController,
   ) {}
+
+  async messageToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: 'bottom',
+    });
+    await toast.present();
+  }
 
   goToInicio() {
     this.router.navigate(['/inicio']);
@@ -34,10 +46,9 @@ export class MenuPage implements OnInit, OnDestroy {
     this.router.navigate(['/clase'])
   }
   
-  
-  ngOnInit() {
-
-   
+ 
+  ngOnInit(): void {
+      //Checkeamos si estamos logeados. Si estamos logeados, usamos nuestro Token.
   }
  ionViewDidEnter(){ this.leafletMap();} //<=Esto sirve para que el mapa pueda cargarse correctamente. ngOnInit solo no sirve.
   

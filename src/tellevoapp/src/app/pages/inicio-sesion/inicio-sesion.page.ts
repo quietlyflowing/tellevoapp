@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
+import { BackendService } from 'src/app/backend.service';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -10,18 +10,15 @@ import { ToastController } from '@ionic/angular';
 })
 export class InicioSesionPage implements OnInit {
 
-  constructor(private router: Router, private httpClient: HttpClient, private toastController: ToastController) { }
+  constructor(private router: Router, private toastController: ToastController, private backend: BackendService) { }
   email: string = '';
   password: string = '';
   confirmpassword: string = '';
   phone: string = '';
   driver: boolean = false;
   patente: string = '';
-  
-
-  checkDuocMail(mail: string) {
-    return this.httpClient.get<any>('http://localhost/api/check/email?api_key=rF2c3SnDAgQisoh6Pk72mwA41RD7G34ELVpN55Jsit7C8YNzMI&mail='+ mail);
-  }
+  year: string = ''; 
+  modelo: string = '';
 
   async messageToast(message: string) {
     const toast = await this.toastController.create({
@@ -34,7 +31,8 @@ export class InicioSesionPage implements OnInit {
 
   registerUser() {
 
-    if (this.phone.length===0){
+    let answer: number;
+    if ((this.phone.length===0 && this.phone.length < 9)){
       this.messageToast('Debe ingresar un teléfono');
       this.phone = '';
       this.password = '';
@@ -49,40 +47,35 @@ export class InicioSesionPage implements OnInit {
       this.password = '';
       this.confirmpassword = '';
     } else {
-      //Esta API es tan básica que creo que es mejor consumirla así
-      this.checkDuocMail(this.email).subscribe((response) => {
-        console.log(response)
-        if (response.code === 1) {
-          this.httpClient.post('http://localhost/api/register', {email: this.email, password: this.password,
-          phone: this.phone,
-          driver: this.driver,
-          patente: this.patente}).subscribe(response => {
-            console.log('POST request success:', response);
+      const datosRegistro: object = {
+        email: this.email,
+        password: this.password,
+        phone: (this.phone as unknown) as number,
+        driver: this.driver,
+        patente: this.patente,
+        modelo: this.modelo,
+        año: (this.year as unknown) as number
+      }
+      this.backend.registerNewUser(this.email, datosRegistro).subscribe((res) => {
+        console.log(res) 
+          if(res['code'] === 6) {
             this.router.navigate(['/menu']);
-          }, error => {
-            // Handle any errors
-            console.error('POST request error:', error);
-          });
-          //Enviar solicitud de creación de usuario
-          console.log(response.code);
-        } else if(response.code === 255) {
-          this.router.navigate(['/inicio']);
-          this.messageToast('El correo electrónico otorgado no pertenece a ningún alumno de DuocUC');
-        } else {
-          this.router.navigate(['/inicio']);
-          this.messageToast('Error desconocido');
+          } else if(res['code']===4) {
+            this.messageToast('El correo electrónico no corresponde con ningún correo de DuocUC');
+            this.router.navigate(['/']);
+          }
+        }, error => {
+          console.log(error);
+          this.messageToast('Lo sentimos, ocurrió un error');
+          this.router.navigate(['/']);
         }
-      })
+      );
+
     }
 
 
 
   }
-
-
-  // goToRegistrarse() {
-  //   this.router.navigate(['/registrarse']);
-  // }
 
   ngOnInit() {
   }

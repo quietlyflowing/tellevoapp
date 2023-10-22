@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicle', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('vehicles', function (Blueprint $table) {
+            //
+            $table->foreign(['user_id'], 'fk_vehicle_data')->references('id')->on('users');
         });
     }
 
@@ -22,6 +22,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicle');
+        Schema::table('vehicles', function (Blueprint $table) {
+            //
+            $table->dropForeign('fk_vehicle_data');
+
+        });
     }
 };
