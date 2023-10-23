@@ -34,9 +34,9 @@ class LoginController extends Controller
 
         if (Auth::check()) {
             // $res->status = 0;
-           // $request->user()->tokens()->delete();
-           // $token = Auth::user()->createToken(Auth::user()->email . "_token")->plainTextToken;
-            return self::returnJSONBuilder(200, 'Sesión validada', 2);
+            $request->user()->tokens()->delete();
+            $token = Auth::user()->createToken(Auth::user()->email . "_token")->plainTextToken;
+            return self::returnJSONBuilder(200, 'Sesión validada', 2, $token);
         }
         return self::returnJSONBuilder(200, 'Sesión no válida', 0);
 

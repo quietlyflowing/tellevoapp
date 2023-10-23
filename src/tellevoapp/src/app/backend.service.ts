@@ -32,8 +32,8 @@ export class BackendService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    let form = { mail: mail, password: password };
-    return this.http.post<ApiResponse>(`${this.backendURL}/register`, form, { params: this.apiAppended, headers: headers }).pipe();
+    let form = { email: mail, password: password };
+    return this.http.post<ApiResponse>(`${this.backendURL}/login`, form, { params: this.apiAppended, headers: headers }).pipe();
   }
 
   checkSession(token: string): Observable<ApiResponse> {

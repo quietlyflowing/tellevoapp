@@ -49,6 +49,7 @@ export class MenuPage implements OnInit, OnDestroy {
  
   ngOnInit(): void {
       //Checkeamos si estamos logeados. Si estamos logeados, usamos nuestro Token.
+      console.log(window.localStorage.getItem('beareToken'));
   }
  ionViewDidEnter(){ this.leafletMap();} //<=Esto sirve para que el mapa pueda cargarse correctamente. ngOnInit solo no sirve.
   
