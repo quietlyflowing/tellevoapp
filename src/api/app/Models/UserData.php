@@ -11,5 +11,5 @@ class UserData extends Model
 
     protected $table = 'users_data';
 
-    protected $fillable = [ 'name', 'phone']; 
+    protected $fillable = [ 'nombre', 'telefono']; 
 }

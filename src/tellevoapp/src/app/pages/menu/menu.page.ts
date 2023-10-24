@@ -7,6 +7,8 @@ import { Geolocation } from '@capacitor/geolocation';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { BackendService } from 'src/app/backend.service';
 import { ToastController } from '@ionic/angular';
+import { ApiResponse } from 'src/app/interfaces/interfaces';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
@@ -46,12 +48,20 @@ export class MenuPage implements OnInit, OnDestroy {
     this.router.navigate(['/clase'])
   }
   
- 
-  ngOnInit(): void {
-      //Checkeamos si estamos logeados. Si estamos logeados, usamos nuestro Token.
-      console.log(window.localStorage.getItem('beareToken'));
+  closeSession() {
+    if(this.backend.logoutUSer()){
+      this.map.remove();
+      this.router.navigate(['/inicio']);
+      this.messageToast('Sesión cerrada correctamente');
+      
+    }
   }
- ionViewDidEnter(){ this.leafletMap();} //<=Esto sirve para que el mapa pueda cargarse correctamente. ngOnInit solo no sirve.
+  ngOnInit(): void {
+      //Checkeamos si estamos logeados. Si estamos logeados, usamos nuestro token para solicitar datos del usuario
+  }
+
+ ionViewDidEnter(){
+  this.leafletMap();} //<=Esto sirve para que el mapa pueda cargarse correctamente. ngOnInit solo no sirve.
   
  leafletMap(){ //<= Todo esto crea e inserta el mapa en la página principal del menú
   // Por ahora todo está hardcoeado, así que siempre mostrará la sede de DUOC Maipú

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { BackendService } from 'src/app/backend.service';
+import { StorageService } from 'src/app/storage.service';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -10,7 +11,7 @@ import { BackendService } from 'src/app/backend.service';
 })
 export class InicioSesionPage implements OnInit {
 
-  constructor(private router: Router, private toastController: ToastController, private backend: BackendService) { }
+  constructor(private router: Router, private toastController: ToastController, private backend: BackendService, private storage: StorageService) { }
   email: string = '';
   password: string = '';
   confirmpassword: string = '';
@@ -59,7 +60,11 @@ export class InicioSesionPage implements OnInit {
       this.backend.registerNewUser(this.email, datosRegistro).subscribe((res) => {
         console.log(res) 
           if(res['code'] === 6) {
-            this.router.navigate(['/menu']);
+            this.backend.logUser(this.email, this.password).subscribe((res) =>{
+              this.storage.setBearerToken(res.token!);
+              this.router.navigate(['/menu']);
+            });
+            
           } else if(res['code']===4) {
             this.messageToast('El correo electrónico no corresponde con ningún correo de DuocUC');
             this.router.navigate(['/']);

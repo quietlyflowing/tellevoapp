@@ -23,10 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-//Route::get('/testeam', function (Request $request) {return 'hola viteh';})->middleware(CheckApiKeys::class);
-//Route::get('/testauto', function (Request $request){return 'Alejo, hay que tener sexo';})->middleware('auth:sanctum');
-
-
 Route::post('/login', [LoginController::class, 'userLogin'])->middleware(['throttle:6,1']);
 Route::get('/logout', [LoginController::class, 'userLogout'])->middleware('auth:sanctum');
 Route::get('/check', [LoginController::class, 'checkSession'])->middleware('auth:sanctum');

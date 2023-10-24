@@ -43,7 +43,7 @@ class RegistrationController extends Controller
         }
         try {
             $user->save();
-            $user->datos()->create(['name' => DuocMail::where('correo_electronico', $request->email)->first()->nombre, 'phone' => $request->phone]);
+            $user->datos()->create(['nombre' => DuocMail::where('correo_electronico', $request->email)->first()->nombre, 'telefono' => $request->phone]);
             if ($user->IS_DRIVER === 1) {
                 $user->vehiculos()->create(['patente' => $request->patente, 'modelo' => $request->modelo, 'año' => $request->año]);
             }
