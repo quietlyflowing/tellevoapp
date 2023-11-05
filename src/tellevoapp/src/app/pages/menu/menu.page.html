@@ -3,14 +3,12 @@
 <ion-menu contentId="main-content" >
   <ion-header>
     <ion-toolbar>
-      <ion-menu-toggle>
-        <ion-menu-button></ion-menu-button>
-      </ion-menu-toggle>
+      <ion-title>Hola, Usuario</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button class="ion-padding" (click)="goToClase()">¿Eres pasajero o conductor?.</ion-button>
-  <ion-button class="ion-padding">Registra tu viaje.</ion-button>
-  <ion-button class="ion-padding">Mira tu viaje.</ion-button>
+  <!-- <ion-button class="ion-padding" (click)="goToClase()">¿Eres pasajero o conductor?.</ion-button> -->
+  <ion-button class="ion-padding">Tus viajes</ion-button>
+  <ion-button class="ion-padding">¡Quiero ser conductor también!</ion-button>
   <ion-button class="ion-padding">Utiliza QR.</ion-button>
   <ion-button class="ion-padding">Funcionalidades de la app.</ion-button>
   <ion-button class="ion-padding" (click)="goToSobreNosotros()">Sobre nosotros.</ion-button>
@@ -20,23 +18,41 @@
 
 
 <div class="ion-page" id="main-content">
-  <ion-header>
-    <ion-toolbar>
+   <ion-header>
+    <!-- <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    </ion-toolbar> -->
+  </ion-header> 
   <ion-content class="menu-fondo"> 
     <ion-text style="color: black;">
-       <h1 style="padding-left: 5%; width: 90%;">Bienvenido de nuevo, Usuario</h1>  <!-- Reemplazar con nombre que venga de base de datos -->
-    </ion-text>
+      <h1 style="padding-left: 5%; width: 90%;">Hola, Usuario</h1>  <!-- Reemplazar con nombre que venga de base de datos -->
+   </ion-text>
+   <ion-text style="color: black;">
+    <h2 style="padding-left: 2%;">¿A dónde quieres ir hoy?</h2>  
+ </ion-text>
+ <ion-input>TO STYLE</ion-input>
+   <ion-button expand="full">TEST</ion-button>
+   <ion-button expand="full">CAFEST</ion-button>
     <div id="mapa-principal" style="width: 90%; height: 50%;"> <!-- DIV del mapa. No tocar-->
      </div>
-
+     <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="inicio">
+          <ion-icon name="home"></ion-icon>
+          Inicio
+        </ion-tab-button>
+        <ion-tab-button tab="history">
+          <ion-icon name="list"></ion-icon>
+          Historial de Viajes
+        </ion-tab-button>
+        <ion-tab-button tab="account">
+          <ion-icon name="person"></ion-icon>
+          Cuenta
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
   </ion-content> 
-
-  
-  
 </div>

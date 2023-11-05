@@ -1,51 +1,83 @@
 /* Estilos para el menú desplegado */
 ion-menu {
-    --ion-background-color: #132CAA; /* Color de fondo del menú desplegado */
-    --ion-toolbar-background: #132CAA; /* Color de fondo de la barra de arriba */
-    --ion-text-color: #fff; /* Color de texto (letras) en el menú desplegado */
-  }
-  
-  /* Estilos para el contenido del menú desplegado */
-  ion-content.ion-padding {
-    padding: 15px; /* Añade relleno a los elementos de contenido del menú */
-    font-size: 18px; /* Tamaño de fuente */
-    transition: background-color 0.3s; /* Animación de cambio de color de fondo */
-  }
-  
-  ion-content.ion-padding:hover {
-    background-color: #f0f0f0; /* Cambia el color de fondo al pasar el cursor */
-  }
-  
-  /* Estilos para el encabezado de la página principal */
-  ion-header ion-toolbar {
-    background-color: #132CAA; /* Color de fondo de la barra de arriba en la página principal */
-    color: #fff; /* Color de texto (letras) en la barra de arriba en la página principal */
-  }
-  
-  ion-title {
-    font-size: 24px; /* Tamaño de fuente del título */
-  }
-
-  ion-header {
-    --ion-background-color: #132CAA; /* Color de fondo del menú desplegado */
-    --ion-toolbar-background: #132CAA; /* Color de fondo de la barra de arriba */
-    --ion-text-color: #fff; /* Color de texto (letras) en el menú desplegado */
-  }
-
-  .background {
-    --ion-background-color: #ffffff;
+  --ion-background-color: #132CAA;
+  /* Color de fondo del menú desplegado */
+  --ion-toolbar-background: #132CAA;
+  /* Color de fondo de la barra de arriba */
+  --ion-text-color: #fff;
+  /* Color de texto (letras) en el menú desplegado */
 }
+
+/* Estilos para el contenido del menú desplegado */
+ion-content.ion-padding {
+  padding: 15px;
+  /* Añade relleno a los elementos de contenido del menú */
+  font-size: 18px;
+  /* Tamaño de fuente */
+  transition: background-color 0.3s;
+  /* Animación de cambio de color de fondo */
+}
+
+ion-content.ion-padding:hover {
+  background-color: #f0f0f0;
+  /* Cambia el color de fondo al pasar el cursor */
+}
+
+/* Estilos para el encabezado de la página principal */
+ion-header ion-toolbar {
+  background-color: #132CAA;
+  /* Color de fondo de la barra de arriba en la página principal */
+  color: #fff;
+  /* Color de texto (letras) en la barra de arriba en la página principal */
+}
+
+ion-title {
+  font-size: 24px;
+  /* Tamaño de fuente del título */
+}
+
+ion-header {
+  --ion-background-color: #132CAA;
+  /* Color de fondo del menú desplegado */
+  --ion-toolbar-background: #132CAA;
+  /* Color de fondo de la barra de arriba */
+  --ion-text-color: #fff;
+  /* Color de texto (letras) en el menú desplegado */
+}
+
+.background {
+  --ion-background-color: #ffffff;
+}
+
 .menu-fondo {
   --ion-background-color: #ffffff;
+}
+
+
+ion-tab-bar {
+  --background: #ffffff;
+  --color:#132CAA
+}
+
+ion-icon {
+  color: #132CAA;
 }
 
 ion-button {
   --background: #132CAA;
   --box-shadow: 0 0px 0px 0 #132CAA;
-    text-align:left;
+  text-align: left;
 }
 
- #mapa-principal {  /* CSS para el DIV del mapa*/
+.clear-button {
+  --background: #ffffff;
+  text-align: center;
+}
+
+
+
+#mapa-principal {
+  /* CSS para el DIV del mapa*/
   width: 90%;
   height: 50%;
   position: relative;
@@ -53,4 +85,5 @@ ion-button {
   left: 5%;
   border: 2px solid #132CAA;
   border-radius: 0.5rem;
-  outline-style: none; }
+  outline-style: none;
+}

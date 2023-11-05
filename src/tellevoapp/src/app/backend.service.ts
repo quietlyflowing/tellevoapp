@@ -10,7 +10,8 @@ import { StorageService } from './storage.service';
 
 export class BackendService {
 
- backendURL: string = 'http://localhost/api'; 
+ //backendURL: string = 'http://localhost/api'; 
+ backendURL: string = 'http://tellevo-api.cornfield.agency/api'
  API_KEY: string = 'rF2c3SnDAgQisoh6Pk72mwA41RD7G34ELVpN55Jsit7C8YNzMI';
   constructor(private http: HttpClient, private storage: StorageService) { }
   params = new HttpParams();
