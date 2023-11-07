@@ -32,6 +32,9 @@ Route::get('/empty', [LoginController::class, 'noSession'])->name("login");
 Route::middleware(CheckApiKeys::class)->controller(RegistrationController::class)->group(function () {
     Route::get('/check/email/', 'checkValidMail');
     Route::post('/register','register');
+    Route::post('/update/vehicle', 'updateVehicleInfo')->middleware('auth:sanctum');
+    Route::post('/update/user/info', 'updateUserInfo')->middleware('auth:sanctum');
+    Route::post('/update/user', 'updateUserCredentials')->middleware('auth:sanctum');
 });
 
 Route::middleware(['auth:sanctum',CheckApiKeys::class])->get('/obtener/datos/usuario', [DataController::class, 'returnAllUserData']);
