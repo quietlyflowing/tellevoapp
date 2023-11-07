@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\DuocMail;
 use App\Models\UserData;
+use App\Models\Vehiculo;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
@@ -53,6 +56,71 @@ class RegistrationController extends Controller
             \DB::rollBack();
             return self::returnJSONBuilder(500, $e->getMessage(), 255);
         }
-
     }
+
+    public function updateVehicleInfo(Request $request) {
+        // {
+        //     "patente" : "DNFA59",
+        //     "modelo" : "Toyota Corolla",
+        //     "año" : 2015
+        // }
+        //No es necesario que estén seteados todos los campos, pero el campo que venga no puede estar vacío
+
+        $inputArray = json_decode($request->getContent(), true);
+        DB::beginTransaction();
+        try {
+            $toUpdate = Vehiculo::firstWhere('user_id', Auth::id());
+            foreach($inputArray as $key => $value){
+                $toUpdate->{$key} = $value;
+            }
+            $toUpdate->save();
+            DB::commit();
+            return self::returnJSONBuilder(200, 'Datos del vehículo actualizados correctamente.', 255);
+        }
+        catch (\Exception $e) {
+            DB::rollback();
+            return self::returnJSONBuilder(500, $e->getMessage(), 255);
+        } 
+    }
+    public function updateUserInfo(Request $request) {
+        $inputArray = json_decode($request->getContent(), true);
+        DB::beginTransaction();
+        try {
+            $toUpdate = UserData::firstWhere('user_id', Auth::id());
+            foreach($inputArray as $key => $value){
+                $toUpdate->{$key} = $value;
+            }
+            $toUpdate->save();
+            DB::commit();
+            return self::returnJSONBuilder(200, 'Datos del usuario actualizados correctamente.', 255);
+        }
+        catch (\Exception $e) {
+            DB::rollback();
+            return self::returnJSONBuilder(500, $e->getMessage(), 255);
+        } 
+    }
+    public function updateUserCredentials(Request $request) {
+        //{
+        // "email": "te.st@duocuc.cl",
+        // "password": "testpassword"
+        //    
+        //}
+        $inputArray = json_decode($request->getContent(), true);
+        DB::beginTransaction();
+        try {
+            $toUpdate = User::find(Auth::id());
+            foreach($inputArray as $key => $value){
+                $toUpdate->{$key} = $value;
+            }
+            $toUpdate->save();
+            DB::commit();
+            return self::returnJSONBuilder(200, 'Datos del usuario actualizados correctamente.', 255);
+        }
+        catch (\Exception $e) {
+            DB::rollback();
+            return self::returnJSONBuilder(500, $e->getMessage(), 255);
+        } 
+    }
+
+
 }

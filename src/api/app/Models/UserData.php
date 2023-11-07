@@ -10,6 +10,7 @@ class UserData extends Model
     use HasFactory;
 
     protected $table = 'users_data';
+    protected $primaryKey = 'user_id';
 
     protected $fillable = [ 'nombre', 'telefono']; 
 }
