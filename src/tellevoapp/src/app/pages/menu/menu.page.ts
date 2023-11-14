@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { MenuController, IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
 import { Router } from '@angular/router';
 import * as Leaflet from 'leaflet';
 import { Geolocation } from '@capacitor/geolocation';
@@ -9,6 +10,7 @@ import { BackendService } from 'src/app/backend.service';
 import { ToastController } from '@ionic/angular';
 import { ApiResponse } from 'src/app/interfaces/interfaces';
 import { Observable } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
@@ -18,8 +20,7 @@ import { Observable } from 'rxjs';
 export class MenuPage implements OnInit, OnDestroy {
 
   map!: Leaflet.Map
-
-
+  isDriver: number = 1;
   constructor(
     private menuController: MenuController,
     private router: Router,
@@ -27,6 +28,28 @@ export class MenuPage implements OnInit, OnDestroy {
     private backend: BackendService,
     private toastController: ToastController,
   ) {}
+
+  @ViewChild(IonModal) modal!: IonModal;
+
+  message: string = "test";
+  name: string ='';
+
+  close() {
+    this.modal.dismiss(null, 'Cerrar');
+  }
+
+  onWillDismiss(event: Event){
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    if (ev.detail.role === 'confirm') {
+      this.message = `Hello, ${ev.detail.data}!`;
+    }
+  }
+
+  toggleMenu() {
+    this.menuController.toggle();
+  }
+
+
 
   async messageToast(message: string) {
     const toast = await this.toastController.create({

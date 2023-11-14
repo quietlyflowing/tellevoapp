@@ -53,37 +53,35 @@ ion-header {
   --ion-background-color: #ffffff;
 }
 
-
 ion-tab-bar {
-  --background: #ffffff;
-  --color:#132CAA
+  bottom: 2.3rem;
+  position: relative;
+  border-radius: 16px;
+  width: 95%;
+  margin: 0 auto;
+  --background: #132CAA
 }
 
-ion-icon {
-  color: #132CAA;
+ion-tab-button{
+  --color: #ffffff;
+  
 }
-
-ion-button {
-  --background: #132CAA;
-  --box-shadow: 0 0px 0px 0 #132CAA;
-  text-align: left;
-}
-
-.clear-button {
-  --background: #ffffff;
-  text-align: center;
-}
-
-
 
 #mapa-principal {
   /* CSS para el DIV del mapa*/
   width: 90%;
   height: 50%;
   position: relative;
-  top: 10%;
+  top: 2%;
   left: 5%;
   border: 2px solid #132CAA;
   border-radius: 0.5rem;
   outline-style: none;
+}
+
+#ourlogo {
+  max-width: 20%; 
+  max-height: 5%;
+  margin-left: 2%;
+  margin-top: 5%;
 }

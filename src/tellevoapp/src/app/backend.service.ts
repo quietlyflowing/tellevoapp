@@ -118,6 +118,12 @@ export class BackendService {
   //   });
   //   return this.http.get<ApiResponse>(`${this.backendURL}/obtener/datos/usuario`, { params: this.apiAppended, headers: header }).pipe()
   // }
-  
+
+  // updateUserData(): Observable<ApiResponse> {
+  //   let token: string;
+
+  //   this.storage.getBearerToken().then()
+  // }
+
     
 }
