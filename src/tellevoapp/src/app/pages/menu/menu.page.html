@@ -1,12 +1,12 @@
 <ion-menu contentId="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Hola, Usuario</ion-title>
+      <ion-title>Hola, {{userName}}</ion-title>
     </ion-toolbar>
   </ion-header>
   <!-- <ion-button class="ion-padding" (click)="goToClase()">¿Eres pasajero o conductor?.</ion-button> -->
-  <ion-button class="ion-padding">Tus viajes</ion-button>
-  <ion-button class="ion-padding">¡Quiero ser conductor también!</ion-button>
+  <!-- <ion-button class="ion-padding">Tus viajes</ion-button> -->
+  <!-- <ion-button class="ion-padding">¡Quiero ser conductor también!</ion-button> -->
   <ion-button class="ion-padding">Utiliza QR.</ion-button>
   <ion-button class="ion-padding">Funcionalidades de la app.</ion-button>
   <ion-button class="ion-padding" (click)="goToSobreNosotros()">Sobre nosotros.</ion-button>
@@ -17,9 +17,6 @@
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <!-- <ion-buttons slot="start">
-          <ion-button (click)="cancel()">Cancel</ion-button>
-        </ion-buttons> -->
         <ion-title>Historial de Viajes</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="close()" [strong]="true">Cerrar</ion-button>
@@ -45,12 +42,6 @@
 
 <div class="ion-page" id="main-content">
   <ion-header>
-    <!-- <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>Menu</ion-title>
-    </ion-toolbar> -->
   </ion-header>
   <ion-content class="menu-fondo">
     <ion-img src="assets/img/TellevoappLogo.png" id="ourlogo"></ion-img>
@@ -58,12 +49,19 @@
       <ion-text style="color: black;">
         <h2 style="padding-top:5%; padding-left: 2%; padding-bottom: 5%;">¿A dónde quieres ir hoy?</h2>
       </ion-text>
-      <ion-button expand="full">TEST</ion-button>
-      <ion-button expand="full">CAFEST</ion-button>
+      <ion-button expand="full">Hogar</ion-button>
+      <ion-button expand="full">DuocUC</ion-button>
     </div>
     <div id="driver-content" *ngIf="isDriver === 1">
-      <!-- Placeholder para el conductor -->
-      <h1 style="color:red">SOLO SOY VISIBLE SI EL USUARIO ES UN CONDUCTOR</h1>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Conductor {{userName}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Acá va la información del vehículo
+        </ion-card-content>
+      </ion-card>
+      <ion-button expand="full">Buscar viajes</ion-button>
     </div>
     <h2 style="padding-left:5%">Tu ubicación:</h2>
     <div id="mapa-principal" style="width: 90%; height: 50%;"> <!-- DIV del mapa. No tocar-->

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BackendService } from 'src/app/backend.service';
-import { StorageService } from 'src/app/storage.service';
+import { BackendService } from 'src/app/services/backend.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 @Component({
   selector: 'app-inicio',
@@ -10,7 +11,7 @@ import { StorageService } from 'src/app/storage.service';
 })
 export class InicioPage implements OnInit {
 
-  constructor(private router: Router, private storage: StorageService, private backend: BackendService,) { }
+  constructor(private router: Router, private storage: StorageService, private backend: BackendService, private auth: AuthGuardService) { }
 
   goToInicioSesion() {
     this.router.navigate(['/inicio-sesion']);
@@ -21,12 +22,6 @@ export class InicioPage implements OnInit {
   }
 
   ngOnInit() {
-  if(this.backend.checkSession()){
-    this.router.navigate(['/menu']);
-  } else {
-    true;
-  }
-      
   }
 
   

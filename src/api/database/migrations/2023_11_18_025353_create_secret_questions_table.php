@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->tinyInteger('question');
             $table->string('answer');
+            $table->timestamps();
         });
     }
 

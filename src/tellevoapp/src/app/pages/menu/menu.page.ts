@@ -1,16 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MenuController, IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as Leaflet from 'leaflet';
 import { Geolocation } from '@capacitor/geolocation';
 //import { antPath } from 'leaflet-ant-path';
-import { AuthenticationService } from 'src/app/authentication.service';
-import { BackendService } from 'src/app/backend.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ToastController } from '@ionic/angular';
-import { ApiResponse } from 'src/app/interfaces/interfaces';
-import { Observable } from 'rxjs';
-import { TestBed } from '@angular/core/testing';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
@@ -20,23 +16,29 @@ import { TestBed } from '@angular/core/testing';
 export class MenuPage implements OnInit, OnDestroy {
 
   map!: Leaflet.Map
-  isDriver: number = 1;
+  isDriver: number = 2;
+  message: string = "test";
+  name: string ='';
+  userName: string = '';
+  resolvedData: any;
+  
   constructor(
     private menuController: MenuController,
     private router: Router,
-    private auth: AuthenticationService,
-    private backend: BackendService,
     private toastController: ToastController,
-  ) {}
+    private activeRoute: ActivatedRoute,
+    private auth: AuthenticationService
+  ) 
+  {}
 
   @ViewChild(IonModal) modal!: IonModal;
 
-  message: string = "test";
-  name: string ='';
+ 
 
   close() {
     this.modal.dismiss(null, 'Cerrar');
   }
+
 
   onWillDismiss(event: Event){
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -48,7 +50,6 @@ export class MenuPage implements OnInit, OnDestroy {
   toggleMenu() {
     this.menuController.toggle();
   }
-
 
 
   async messageToast(message: string) {
@@ -66,25 +67,28 @@ export class MenuPage implements OnInit, OnDestroy {
   goToSobreNosotros() {
     this.router.navigate(['/sobre-nosotros']);
   } 
-  
+
   goToClase() {
-    this.router.navigate(['/clase'])
-  }
-  
-  closeSession() {
-    if(this.backend.logoutUSer()){
-      this.map.remove();
-      this.router.navigate(['/inicio']);
-      this.messageToast('Sesión cerrada correctamente');
-      
-    }
-  }
-  ngOnInit(): void {
-      //Checkeamos si estamos logeados. Si estamos logeados, usamos nuestro token para solicitar datos del usuario
+    this.router.navigate(['/clase']);
   }
 
+  ngOnInit(): void {
+    this.resolvedData = this.activeRoute.snapshot.data['resolvedData'];
+    this.isDriver = this.resolvedData.data[0].IS_DRIVER;
+    console.log(this.resolvedData.data[0]);
+    this.userName = this.resolvedData.data[0].datos.nombre;
+  }
+
+ 
+
+
+  closeSession(): void{
+    this.router.navigate(['/inicio']);
+    this.auth.closeSession();
+  }
  ionViewDidEnter(){
-  this.leafletMap();} //<=Esto sirve para que el mapa pueda cargarse correctamente. ngOnInit solo no sirve.
+  this.leafletMap();
+  } //<=Esto sirve para que el mapa pueda cargarse correctamente. ngOnInit solo no sirve.
   
  leafletMap(){ //<= Todo esto crea e inserta el mapa en la página principal del menú
   // Por ahora todo está hardcoeado, así que siempre mostrará la sede de DUOC Maipú
@@ -100,6 +104,7 @@ export class MenuPage implements OnInit, OnDestroy {
   Leaflet.marker([-33.51190, -70.75276], {icon: icono}).addTo(this.map).bindPopup('DuocUC: Sede Maipú'); //
  }
  
+
  ngOnDestroy() {
     this.map.remove();
   }
