@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use \Illuminate\Database\Eloquent\Relations\HasOne;
+use \Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable;
@@ -49,5 +50,11 @@ class User extends Authenticatable
 
     public function vehiculos(): HasOne {
         return $this->hasOne(Vehiculo::class);
+    }
+    public function question(): HasOne {
+        return $this->hasOne(Question::class);
+    }
+    public function travels(): HasMany {
+        return $this->hasMany(TravelHistory::class);
     }
 }

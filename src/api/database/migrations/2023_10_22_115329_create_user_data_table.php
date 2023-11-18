@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id('user_id');
             $table->string('nombre');
             $table->string('telefono',9);
+            $table->string('direccion_hogar');
+            $table->string('direccion_duoc');
+            $table->json('cord_hogar');
+            $table->json('cord_duoc');
             $table->timestamps();
         });
     }

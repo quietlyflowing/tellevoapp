@@ -15,10 +15,10 @@ class DataController extends Controller
         $checkUser = User::find($pk);
         $user = User::where('id', '=', $pk);
         if($checkUser->IS_DRIVER === 1) {
-           $data = $user->with('datos', 'vehiculos')->get();
+           $data = $user->with('datos', 'vehiculos', 'travels')->get();
             return self::returnJSONBuilder(200, 'Registro Solicitado Encontrado', 0, $data);
         } 
-        $data = $user->with('datos')->get();
+        $data = $user->with('datos', 'travels')->get();
         return self::returnJSONBuilder(200, 'Registro Solicitado Encontrado', 0, $data);
     }
 }

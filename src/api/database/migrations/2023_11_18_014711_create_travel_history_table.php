@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('travel_history', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->tinyInteger('IS_DRIVER');
-            $table->string('password_change_hash')->nullable()->defaul(null);
-            $table->dateTime('hash_valid_until')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->json('from_coord');
+            $table->json('to_coord');
+            $table->tinyInteger('payment');
             $table->timestamps();
-           
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('travel_history');
     }
 };

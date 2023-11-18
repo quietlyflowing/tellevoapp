@@ -16,7 +16,7 @@ class Controller extends BaseController
         $toReturn->code = $ourOwnCode;
         $toReturn->message = $message;
         if(is_object($additional)||is_array($additional)) {
-            $toReturn->data = $additional;
+            $toReturn->data = (object) $additional;
         } elseif(is_string($additional)){
             $toReturn->token = $additional;
         }
