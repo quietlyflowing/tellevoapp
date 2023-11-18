@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { BackendService } from 'src/app/backend.service';
-import { StorageService } from 'src/app/storage.service';
+import { BackendService } from 'src/app/services/backend.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-inicio-sesion',

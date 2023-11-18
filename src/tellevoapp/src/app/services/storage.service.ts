@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,16 +19,32 @@ export class StorageService {
     this._storage = storage;
   }
   
-  public setBearerToken(Token: string): Promise<any> | undefined {
+  public setBearerToken(Token: string): Promise<any> {
     return this.storage.set('_bearerToken', Token)
   }
+  
 
-  public getBearerToken(): Promise<string> {
-    return this.storage.get('_bearerToken');
+  public async setString(Token: string): Promise<any> {
+    try{
+      const result = await this.storage.set('_string', Token);
+      return result;}
+      catch(error){
+        return error;
+      }
   }
 
-  public removeBearerToken(){
-    this._storage?.remove('_bearerToken');
+  public async getBearerToken(): Promise<string> {
+    try{
+      const token = await this.storage.get('_bearerToken');
+      return token;
+    } catch (error) {
+      console.error('Error recuperando token:', error);
+      throw error; 
+    }
+  }
+
+  public removeBearerToken(): Promise<any> | undefined {
+    return this._storage?.remove('_bearerToken');
   }
 
   public setLoginCredentials(email: string, password: string ){

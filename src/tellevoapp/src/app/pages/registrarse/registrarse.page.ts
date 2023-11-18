@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BackendService } from 'src/app/backend.service';
+import { BackendService } from 'src/app/services/backend.service';
 import { ToastController } from '@ionic/angular';
-import { StorageService } from 'src/app/storage.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-registrarse',

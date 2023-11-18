@@ -1,15 +1,21 @@
 import { NgModule } from '@angular/core';
+import { DataResolverService } from './services/data-resolver.service';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'inicio',
+    redirectTo: 'menu',
     pathMatch: 'full'
   },
   {
     path: 'menu',
-    loadChildren: () => import('./pages/menu/menu.module').then( m => m.MenuPageModule)
+    resolve: {
+      resolvedData: DataResolverService
+    },
+    loadChildren: () => import('./pages/menu/menu.module').then( m => m.MenuPageModule),
+    canActivate: [AuthGuardService],
   },
   {
     path: 'inicio',
@@ -25,6 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'recuperar',
+    canActivate: [AuthGuardService],
     loadChildren: () => import('./pages/recuperar/recuperar.module').then( m => m.RecuperarPageModule)
   },
   {
