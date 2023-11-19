@@ -45,6 +45,10 @@ ion-header {
   /* Color de texto (letras) en el menú desplegado */
 }
 
+li {
+  list-style-type: none;
+}
+
 .background {
   --ion-background-color: #ffffff;
 }

@@ -42,8 +42,6 @@ Route::middleware(CheckApiKeys::class)->controller(RegistrationController::class
 });
 
 Route::middleware(['auth:sanctum',CheckApiKeys::class])->get('/obtener/datos/usuario', [DataController::class, 'returnAllUserData']);
-// Route::middleware(['auth:sanctum',CheckApiKeys::class])->controller(DataController::class)->group(function(){
-//     Route::get('/obtener/datos/usuario', 'returnAll')->middleware('auth:sanctum');
-// });
+
 
 

@@ -9,5 +9,5 @@ class TravelHistory extends Model
 {
     use HasFactory;
     protected $table = 'travel_history';
-    protected $hidden = ['created_at', 'updated_at', 'id'];
+    protected $hidden = ['updated_at', 'id'];
 }

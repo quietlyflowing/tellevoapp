@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MenuController, IonModal } from '@ionic/angular';
+import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { MenuController, IonModal} from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as Leaflet from 'leaflet';
@@ -7,11 +7,14 @@ import { Geolocation } from '@capacitor/geolocation';
 //import { antPath } from 'leaflet-ant-path';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ToastController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
   styleUrls: ['./menu.page.scss'],
 })
+
 
 export class MenuPage implements OnInit, OnDestroy {
 
@@ -21,6 +24,7 @@ export class MenuPage implements OnInit, OnDestroy {
   name: string ='';
   userName: string = '';
   resolvedData: any;
+  travelsArray: any[] = [];
   
   constructor(
     private menuController: MenuController,
@@ -77,6 +81,9 @@ export class MenuPage implements OnInit, OnDestroy {
     this.isDriver = this.resolvedData.data[0].IS_DRIVER;
     console.log(this.resolvedData.data[0]);
     this.userName = this.resolvedData.data[0].datos.nombre;
+    this.travelsArray = this.resolvedData.data[0].travels;
+    console.log(this.travelsArray);
+  
   }
 
  

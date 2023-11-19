@@ -20,7 +20,7 @@ class Controller extends BaseController
         } elseif(is_string($additional)){
             $toReturn->token = $additional;
         }
-        return response()->json($toReturn, $responseCode, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($toReturn, $responseCode, [], JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
     }
   
 }
