@@ -57,7 +57,7 @@ export class InicioSesionPage implements OnInit {
         modelo: this.modelo,
         año: (this.year as unknown) as number
       }
-      this.backend.registerNewUser(this.email, datosRegistro).subscribe((res) => {
+      this.backend.registerNewUser(datosRegistro).subscribe((res) => {
         console.log(res) 
           if(res['code'] === 6) {
             this.backend.logUser(this.email, this.password).subscribe((res) =>{

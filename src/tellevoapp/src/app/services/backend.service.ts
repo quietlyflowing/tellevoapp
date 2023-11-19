@@ -11,7 +11,8 @@ import { StorageService } from './storage.service';
 
 export class BackendService {
 
-  backendURL: string = 'http://tellevo-api.cornfield.agency/api'
+  //backendURL: string = 'http://tellevo-api.cornfield.agency/api'
+  backendURL: string = 'http://localhost/api'
   API_KEY: string = 'rF2c3SnDAgQisoh6Pk72mwA41RD7G34ELVpN55Jsit7C8YNzMI';
   constructor(private http: HttpClient, private storage: StorageService) { }
   params = new HttpParams();
@@ -19,7 +20,7 @@ export class BackendService {
 
 
 
-  registerNewUser(mail: string, form: object): Observable<ApiResponse> {
+  registerNewUser(form: object): Observable<ApiResponse> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -83,9 +84,110 @@ export class BackendService {
       );
   }
 
+  askPasswordRecoveryPermission(form: object): Observable<ApiResponse> {
+    return from(this.storage.getBearerToken())
+      .pipe(
+        mergeMap((retrieved) => {
+          const token = retrieved || '';
+          console.log('TOKEN ' + retrieved + ' recovered.');
+          const header = new HttpHeaders({
+            'Authorization': 'Bearer ' + token
+          });
+          return this.http.post<DataGetResponse>(`${this.backendURL}/check/question`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
+            catchError((error) => {
+              console.log('ERROR en request HTTP' + error);
+              throw error
+            }));
+        })
+      );
+  }
 
+  recoverPassword(form: object, hash: string): Observable<ApiResponse> {
+    return from(this.storage.getBearerToken())
+      .pipe(
+        mergeMap((retrieved) => {
+          const token = retrieved || '';
+          console.log('TOKEN ' + retrieved + ' recovered.');
+          const header = new HttpHeaders({
+            'Authorization': 'Bearer ' + token
+          });
+          const requiredHash =  this.apiAppended.append('hash', hash);
+          return this.http.post<DataGetResponse>(`${this.backendURL}/update/password`, form ,{ params: requiredHash, headers: header }).pipe(retry(3),
+            catchError((error) => {
+              console.log('ERROR en request HTTP' + error);
+              throw error
+            }));
+        })
+      );
+  }
 
+  updatePassword(form: object): Observable<ApiResponse> {
+    return from(this.storage.getBearerToken())
+      .pipe(
+        mergeMap((retrieved) => {
+          const token = retrieved || '';
+          console.log('TOKEN ' + retrieved + ' recovered.');
+          const header = new HttpHeaders({
+            'Authorization': 'Bearer ' + token
+          });
+          return this.http.post<DataGetResponse>(`${this.backendURL}/update/password/logged`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
+            catchError((error) => {
+              console.log('ERROR en request HTTP' + error);
+              throw error
+            }));
+        })
+      );
+  }
 
+  getAllQuestions(): Observable<ApiResponse>{
+    return from(this.storage.getBearerToken())
+    .pipe(
+      mergeMap((retrieved) => {
+        const token = retrieved || '';
+        console.log('TOKEN ' + retrieved + ' recovered.');
+        const header = new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        });
+        return this.http.get<ApiResponse>(`${this.backendURL}/obtener/preguntas`, { params: this.apiAppended, headers: header }).pipe(retry(3));
+      })
+    );
+  }
 
+  updateUserInfo(form: object) {
+    return from(this.storage.getBearerToken())
+    .pipe(
+      mergeMap((retrieved) => {
+        const token = retrieved || '';
+        console.log('TOKEN ' + retrieved + ' recovered.');
+        const header = new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        });
+        return this.http.post<DataGetResponse>(`${this.backendURL}/update/user/info`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
+          catchError((error) => {
+            console.log('ERROR en request HTTP' + error);
+            throw error
+          }));
+      })
+    );
+  }
 
+  updateVehicleInfo(form: object) {
+    return from(this.storage.getBearerToken())
+    .pipe(
+      mergeMap((retrieved) => {
+        const token = retrieved || '';
+        console.log('TOKEN ' + retrieved + ' recovered.');
+        const header = new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        });
+        return this.http.post<DataGetResponse>(`${this.backendURL}/update/vehicle`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
+          catchError((error) => {
+            console.log('ERROR en request HTTP' + error);
+            throw error
+          }));
+      })
+    );
+  }
+
+  
 }

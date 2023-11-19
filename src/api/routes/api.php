@@ -37,6 +37,7 @@ Route::middleware(CheckApiKeys::class)->controller(RegistrationController::class
     Route::post('/update/vehicle', 'updateVehicleInfo')->middleware('auth:sanctum');
     Route::post('/update/user/info', 'updateUserInfo')->middleware('auth:sanctum');
     Route::get('/obtener/preguntas', 'returnQuestions');
+    Route::post('/update/password/logged', 'refreshPassword'); // <= Método para actualizar la contraseña logeado
     Route::post('/update/password', 'updatePassword')->middleware(IsPasswordHashSetAndValid::class);
 });
 

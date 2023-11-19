@@ -135,22 +135,22 @@ class RegistrationController extends Controller
     //     } 
     // }
 
-    // public function updatePassword(Request $request) {
-    //     //{
-    //     // "password":"testpassword"
-    //     //}
-    //     DB::beginTransaction();
-    //     try{
-    //         $toUpdate = User::firstWhere('user_id', Auth::id());
-    //         $toUpdate->password = $request->password;
-    //         $toUpdate->save();
-    //         DB::commit();
-    //     } catch(\Exception $e) {
-    //         DB::rollBack();
-    //         return self::returnJSONBuilder(500, $e->getMessage(), 255);
-    //     }
-    //         return self::returnJSONBuilder(200, 'Contraseña cambiada correctamente', 255);
-    // }
+    public function refreshPassword(Request $request) {
+        //{
+        // "password":"testpassword"
+        //}
+        DB::beginTransaction();
+        try{
+            $toUpdate = User::firstWhere('user_id', Auth::id());
+            $toUpdate->password = $request->password;
+            $toUpdate->save();
+            DB::commit();
+        } catch(\Exception $e) {
+            DB::rollBack();
+            return self::returnJSONBuilder(500, $e->getMessage(), 255);
+        }
+            return self::returnJSONBuilder(200, 'Contraseña cambiada correctamente', 255);
+    }
 
     public function updatePassword(Request $request) {
         //{

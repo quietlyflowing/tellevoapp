@@ -16,7 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->json('from_coord');
             $table->json('to_coord');
-            $table->tinyInteger('payment');
+            $table->string('transport_user');
+            $table->integer('total_payment');
+            $table->tinyInteger('payment_type');
             $table->timestamps();
         });
     }
