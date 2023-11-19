@@ -47,7 +47,6 @@ class RegistrationController extends Controller
             return self::returnJSONBuilder(200, 'No se ha encontrado el correo electrónico en la base de datos', 4);
         }
         DB::beginTransaction();
-
         $user = new User();
         $user->email = $request->email;
         $user->password = \Hash::make($request->password);
