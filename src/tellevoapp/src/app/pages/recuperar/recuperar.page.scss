@@ -32,7 +32,9 @@ ion-menu {
     --ion-toolbar-background: #132CAA; /* Color de fondo de la barra de arriba */
     --ion-text-color: #fff; /* Color de texto (letras) en el menú desplegado */
   }
-
+ion-select {
+  font-weight: bold;
+}
   .background {
     --ion-background-color: #ffffff;
   }
@@ -101,5 +103,21 @@ ion-menu {
     align-items: center; /* Centrar horizontalmente */
     height: 50%; /* Opcional: asegura que el contenedor ocupe toda la altura disponible */
     margin-left: 10%;
+}
+
+@media screen and (max-width: 360px) and (max-height: 740px) {
+ .inner-item {
+  padding-left:.5rem;
+ }
+ 
+  .bigtext {
+    font-size: 180%;
+    font-weight: bold;
+    color: #002138;
+    margin: 0 auto;
+    text-align: center;
+    width: 50%; /* Ajusta el ancho según tus preferencias */
+    margin-top: 20%;
+}
 
 }

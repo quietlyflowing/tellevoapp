@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import { MenuController, IonModal} from '@ionic/angular';
+import { MenuController, IonModal, AlertController} from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as Leaflet from 'leaflet';
@@ -24,14 +24,17 @@ export class MenuPage implements OnInit, OnDestroy {
   name: string ='';
   userName: string = '';
   resolvedData: any;
+  geoData: any;
   travelsArray: any[] = [];
+  vehicle: any;
   
   constructor(
     private menuController: MenuController,
     private router: Router,
     private toastController: ToastController,
     private activeRoute: ActivatedRoute,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private alert: AlertController
   ) 
   {}
 
@@ -43,6 +46,15 @@ export class MenuPage implements OnInit, OnDestroy {
     this.modal.dismiss(null, 'Cerrar');
   }
 
+  async soonTm() {
+    const alert = await this.alert.create({
+      header: 'Próximamente',
+      subHeader: 'Falta tiempo',
+      message: 'Se iba a implementar con sockets pero no hay tiempo.'
+    });
+
+    await alert.present();
+  }
 
   onWillDismiss(event: Event){
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -77,17 +89,17 @@ export class MenuPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.geoData = this.activeRoute.snapshot.data['geoData'];
     this.resolvedData = this.activeRoute.snapshot.data['resolvedData'];
     this.isDriver = this.resolvedData.data[0].IS_DRIVER;
     console.log(this.resolvedData.data[0]);
     this.userName = this.resolvedData.data[0].datos.nombre;
     this.travelsArray = this.resolvedData.data[0].travels;
-    console.log(this.travelsArray);
-  
+    if(this.resolvedData.data[0].vehiculos !== undefined){
+      this.vehicle = this.resolvedData.data[0].vehiculos;
+    }
+    console.log(this.geoData.coords.latitude);
   }
-
- 
-
 
   closeSession(): void{
     this.router.navigate(['/inicio']);
@@ -106,9 +118,9 @@ export class MenuPage implements OnInit, OnDestroy {
       iconSize: [32, 32]
     }
   );
-  this.map = Leaflet.map('mapa-principal', {center: [-33.51190, -70.75276], zoom: 16, attributionControl: false});
+  this.map = Leaflet.map('mapa-principal', {center: [this.geoData.coords.latitude, this.geoData.coords.longitude], zoom: 16, attributionControl: false});
   Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-  Leaflet.marker([-33.51190, -70.75276], {icon: icono}).addTo(this.map).bindPopup('DuocUC: Sede Maipú'); //
+  Leaflet.marker([this.geoData.coords.latitude, this.geoData.coords.longitude], {icon: icono}).addTo(this.map).bindPopup('Ubicación actual'); //
  }
  
 

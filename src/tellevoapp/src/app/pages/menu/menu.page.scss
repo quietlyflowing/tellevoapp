@@ -89,3 +89,18 @@ ion-tab-button{
   margin-left: 2%;
   margin-top: 5%;
 }
+
+@media screen and (max-width: 360px) and (max-height: 740px) {
+  #mapa-principal {
+    /* CSS para el DIV del mapa*/
+    width: 88%;
+    height: 48%;
+    position: relative;
+    top: -1%;
+    left: 5%;
+    border: 2px solid #132CAA;
+    border-radius: 0.5rem;
+    outline-style: none;
+  }
+
+}

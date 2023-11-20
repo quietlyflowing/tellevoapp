@@ -8,6 +8,8 @@ export interface UserData {
   telefono: string;
   createdAt: String;
   updatedAt: String;
+  hash?: string
+  url?: string
 }
 
 
@@ -32,4 +34,15 @@ export interface DataGetResponse {
   code: number;
   message: string;
   data: ApiData;
+}
+
+export interface PasswordAuthData{
+  url: string;
+  hash: string;
+}
+
+export interface CheckQuestionResponse {
+  code: number;
+  message: string;
+  data: PasswordAuthData;
 }

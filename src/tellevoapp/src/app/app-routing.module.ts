@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { DataResolverService } from './services/data-resolver.service';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './services/auth-guard.service';
+import { GeoResolverService } from './services/georesolver.service';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
   {
     path: 'menu',
     resolve: {
-      resolvedData: DataResolverService
+      resolvedData: DataResolverService,
+      geoData: GeoResolverService,
     },
     loadChildren: () => import('./pages/menu/menu.module').then( m => m.MenuPageModule),
     canActivate: [AuthGuardService],
@@ -31,25 +33,30 @@ const routes: Routes = [
   },
   {
     path: 'recuperar',
-    canActivate: [AuthGuardService],
     loadChildren: () => import('./pages/recuperar/recuperar.module').then( m => m.RecuperarPageModule)
   },
   {
     path: 'sobre-nosotros',
+    canActivate: [AuthGuardService],
     loadChildren: () => import('./pages/sobre-nosotros/sobre-nosotros.module').then( m => m.SobreNosotrosPageModule)
   },
   {
-    path: 'clase',
-    loadChildren: () => import('./pages/clase/clase.module').then( m => m.ClasePageModule)
+    path: 'recovery-two',
+    loadChildren: () => import('./recovery-two/recovery-two.module').then( m => m.RecoveryTwoPageModule)
   },
-  {
-    path: 'pasajero-clase',
-    loadChildren: () => import('./pages/pasajero-clase/pasajero-clase.module').then( m => m.PasajeroClasePageModule)
-  },
-  {
-    path: 'conductor-clase',
-    loadChildren: () => import('./pages/conductor-clase/conductor-clase.module').then( m => m.ConductorClasePageModule)
-  },
+
+  // {
+  //   path: 'clase',
+  //   loadChildren: () => import('./pages/clase/clase.module').then( m => m.ClasePageModule)
+  // },
+  // {
+  //   path: 'pasajero-clase',
+  //   loadChildren: () => import('./pages/pasajero-clase/pasajero-clase.module').then( m => m.PasajeroClasePageModule)
+  // },
+  // {
+  //   path: 'conductor-clase',
+  //   loadChildren: () => import('./pages/conductor-clase/conductor-clase.module').then( m => m.ConductorClasePageModule)
+  // },
 ];
 
 @NgModule({

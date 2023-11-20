@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { DataGetResponse, ApiResponse } from '../interfaces/interfaces';
+import { DataGetResponse, ApiResponse, CheckQuestionResponse } from '../interfaces/interfaces';
 import { ConnectableObservable, Observable, from } from 'rxjs';
 import { retry, catchError, mergeMap } from 'rxjs/operators'
 import { StorageService } from './storage.service';
@@ -11,7 +11,7 @@ import { StorageService } from './storage.service';
 
 export class BackendService {
 
-  backendURL: string = 'http://tellevo-api.cornfield.agency/api'
+  backendURL: string = 'https://tellevo-api.cornfield.agency/api'
   //backendURL: string = 'http://localhost/api'
   API_KEY: string = 'rF2c3SnDAgQisoh6Pk72mwA41RD7G34ELVpN55Jsit7C8YNzMI';
   constructor(private http: HttpClient, private storage: StorageService) { }
@@ -93,7 +93,7 @@ export class BackendService {
           const header = new HttpHeaders({
             'Authorization': 'Bearer ' + token
           });
-          return this.http.post<DataGetResponse>(`${this.backendURL}/check/question`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
+          return this.http.post<ApiResponse>(`${this.backendURL}/check/question`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
             catchError((error) => {
               console.log('ERROR en request HTTP' + error);
               throw error

@@ -1,14 +1,25 @@
 <ion-content class="background" [fullscreen]="true">
   <img class="logo" src="assets/img/TellevoappLogo.png" alt="Mi Imagen">
   <div class="bigtext">Recupera tu contraseña</div>
-  <ion-list class="listas">
-      <ion-input class="text"
-      label="Correo Electronico"
-      labelPlacement="stacked"
-      [clearOnEdit]="true"
-      placeholder="Hola@duocuc.cl"
-      > 
-      </ion-input>
+  <ion-list class="listas" id="myForm">
+    <ion-input class="text" label="Correo Electronico" labelPlacement="stacked" [clearOnEdit]="true"
+      placeholder="hola@duocuc.cl" [(ngModel)]="email">
+    </ion-input>
+    <ion-item>
+      <ion-select aria-label="Preguntas de seguridad" placeholder="Escoja su pregunta de seguridad"
+        [(ngModel)]="question" id="selector-pregunta">
+        <ion-select-option value="0">¿Cuál es el nombre de tu primera mascota?</ion-select-option>
+        <ion-select-option value="1">¿En qué ciudad naciste?</ion-select-option>
+        <ion-select-option value="2">¿Cuál es tu comida favorita?</ion-select-option>
+        <ion-select-option value="3">¿Cuál es el nombre de tu mejor amigo de la infancia?</ion-select-option>
+        <ion-select-option value="4">¿Cuál es tu película favorita?</ion-select-option>
+        <ion-select-option value="5">¿Cuál es tu color favorito?</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-input class="text" label="Respuesta" labelPlacement="stacked" [clearOnEdit]="true" [(ngModel)]="answer"
+      placeholder="Responda aquí">
+    </ion-input>
   </ion-list>
-  <ion-button class="centered-button" (click)="goToRegistrarse()">Continuar</ion-button>    
+
+  <ion-button class="centered-button" (click)="goToRecoveryTwo()">Continuar</ion-button>
 </ion-content>
