@@ -103,3 +103,19 @@ ion-menu {
     margin-left: 10%;
 
 }
+
+.centered-text {
+  padding:5%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centered-text span {
+  text-align: center;
+}
+
+.centered-text p {
+  font-size: 85%;
+  font-weight: bold;
+}

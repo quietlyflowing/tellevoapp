@@ -3,6 +3,7 @@ import { DataResolverService } from './services/data-resolver.service';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './services/auth-guard.service';
 import { GeoResolverService } from './services/georesolver.service';
+import { IntraPageDataService } from './services/intra-page-data.service';
 
 const routes: Routes = [
   {
@@ -42,8 +43,26 @@ const routes: Routes = [
   },
   {
     path: 'recovery-two',
+    resolve: {
+        resolvedData: IntraPageDataService
+    },
     loadChildren: () => import('./recovery-two/recovery-two.module').then( m => m.RecoveryTwoPageModule)
   },
+  {
+    path: 'registro-data',
+    resolve: {resolvedData: IntraPageDataService},
+    loadChildren: () => import('./registro-data/registro-data.module').then( m => m.RegistroDataPageModule)
+  },
+  {
+    path: 'registro-vehiculo',
+    resolve: {resolvedData: IntraPageDataService},
+    loadChildren: () => import('./registro-vehiculo/registro-vehiculo.module').then( m => m.RegistroVehiculoPageModule)
+  },
+  {
+    path: 'registro-final',
+    loadChildren: () => import('./registro-final/registro-final.module').then( m => m.RegistroFinalPageModule)
+  },
+
 
   // {
   //   path: 'clase',

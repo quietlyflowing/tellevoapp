@@ -104,7 +104,7 @@ class RegistrationController extends Controller
             }
             $toUpdate->save();
             DB::commit();
-            return self::returnJSONBuilder(200, 'Datos del usuario actualizados correctamente.', 255);
+            return self::returnJSONBuilder(200, 'Datos del usuario actualizados correctamente.', 25);
         }
         catch (\Exception $e) {
             DB::rollback();

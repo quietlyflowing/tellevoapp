@@ -3,36 +3,14 @@
   <div class="bigtext">Registrarse</div>
 
     <ion-list class="listas">
+    
       <ion-input class="text" label="Correo Electrónico" labelPlacement="stacked" [clearOnEdit]="true"
         [(ngModel)]="email"  placeholder="hola@duocuc.cl">
       </ion-input>
-      <ion-input class="text" label="Teléfono" labelPlacement="stacked" [clearOnEdit]="true" [(ngModel)]="phone"
-        
-        placeholder="9 1234 56 78">
-      </ion-input>
-      <ion-input class="text" label="Contraseña" labelPlacement="stacked" [clearOnEdit]="true" label-placement="stacked"
-     
-        type="password" [(ngModel)]="password" placeholder="*******************">
-      </ion-input>
-      <ion-input class="text" label="Repite la contraseña" labelPlacement="stacked" [clearOnEdit]="true"  
-      label-placement="stacked" type="password" [(ngModel)]="confirmpassword" placeholder="*******************">
-      </ion-input>
-      <ion-input class="text" label="Patente" labelPlacement="stacked" [clearOnEdit]="true" label-placement="stacked"
-        *ngIf="driver" type="text" [(ngModel)]="patente" placeholder="DFHL23">
-      </ion-input>
-      <ion-input class="text" label="Modelo" labelPlacement="stacked" [clearOnEdit]="true" label-placement="stacked"
-        *ngIf="driver" type="text" [(ngModel)]="modelo" placeholder="Chevrolet Yaris 504">
-      </ion-input>
-      <ion-input class="text" label="Año" labelPlacement="stacked" [clearOnEdit]="true" label-placement="stacked"
-        *ngIf="driver" type="text" [(ngModel)]="year" placeholder="2023">
-      </ion-input>
+      <ion-text><p>
+        Para poder utilizar nuestra aplicación, usted debe ser alumno matriculado en DuocUC
+      </p></ion-text>
     </ion-list>
-    <ion-input>
-      <ion-checkbox [(ngModel)]="driver" style="color:#002138 !important; left: 20%;
-  position: relative;
-  top: 150%;">Quiero Ser Conductor</ion-checkbox>
-    </ion-input>
-
     <!-- <ion-toast trigger="pass-failed" message="Las contraseñas no coinciden" [duration]="5000"></ion-toast> -->
-    <ion-button class="centered-button" (click)="registerUser()">Continuar</ion-button>
+    <ion-button class="centered-button" (click)="queryMail()">Continuar</ion-button>
 </ion-content>

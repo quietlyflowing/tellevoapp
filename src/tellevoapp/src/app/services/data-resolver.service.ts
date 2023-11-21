@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { Resolve} from '@angular/router';
 import { Observable } from 'rxjs'; 
 import { BackendService } from './backend.service';
 

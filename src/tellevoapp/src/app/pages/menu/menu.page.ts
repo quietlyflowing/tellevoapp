@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import { MenuController, IonModal, AlertController} from '@ionic/angular';
+import { MenuController, IonModal, AlertController, NavParams} from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as Leaflet from 'leaflet';
@@ -16,6 +16,7 @@ import { ToastController } from '@ionic/angular';
 })
 
 
+
 export class MenuPage implements OnInit, OnDestroy {
 
   map!: Leaflet.Map
@@ -26,8 +27,17 @@ export class MenuPage implements OnInit, OnDestroy {
   resolvedData: any;
   geoData: any;
   travelsArray: any[] = [];
+  travelCount: number = 0;
   vehicle: any;
+  alertButtons = ['Entendido'];
+  isAlertOpen: boolean = false;
+
+  setOpen(isOpen: boolean) {
+    this.isAlertOpen = isOpen;
+  }
   
+  
+
   constructor(
     private menuController: MenuController,
     private router: Router,
@@ -46,15 +56,6 @@ export class MenuPage implements OnInit, OnDestroy {
     this.modal.dismiss(null, 'Cerrar');
   }
 
-  async soonTm() {
-    const alert = await this.alert.create({
-      header: 'Próximamente',
-      subHeader: 'Falta tiempo',
-      message: 'Se iba a implementar con sockets pero no hay tiempo.'
-    });
-
-    await alert.present();
-  }
 
   onWillDismiss(event: Event){
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -67,7 +68,16 @@ export class MenuPage implements OnInit, OnDestroy {
     this.menuController.toggle();
   }
 
+  goToChangeData(){
+    const editForm = {phone: this.resolvedData.data[0].datos.telefono, duoc: this.resolvedData.data[0].datos.direccion_duoc, home: this.resolvedData.data[0].datos.direccion_hogar, imCreating: true};
+    this.router.navigate(['registro-data'], {queryParams: editForm})
+  }
 
+
+  goToChangeVehicleData(){
+    const editForm = {patente: this.resolvedData.data[0].vehiculos.patente, modelo: this.resolvedData.data[0].vehiculos.modelo, año: this.resolvedData.data[0].vehiculos.año, imCreating: true};
+    this.router.navigate(['registro-vehiculo'], {queryParams: editForm});
+  }
   async messageToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -98,6 +108,7 @@ export class MenuPage implements OnInit, OnDestroy {
     if(this.resolvedData.data[0].vehiculos !== undefined){
       this.vehicle = this.resolvedData.data[0].vehiculos;
     }
+    this.travelCount = this.travelsArray.length;
     console.log(this.geoData.coords.latitude);
   }
 
@@ -114,7 +125,8 @@ export class MenuPage implements OnInit, OnDestroy {
   // TODO integrar con geolocalización y GPS
   const icono = Leaflet.icon(
     {
-      iconUrl:"https://cdn-icons-png.flaticon.com/128/6427/6427662.png",
+      //iconUrl:"https://cdn-icons-png.flaticon.com/128/6427/6427662.png",
+      iconUrl: "assets/img/pin.svg",
       iconSize: [32, 32]
     }
   );

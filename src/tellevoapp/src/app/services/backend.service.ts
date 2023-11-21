@@ -189,5 +189,13 @@ export class BackendService {
     );
   }
 
+  checkDuocMail(mail: string){
+    const mailSent = this.apiAppended.append('mail', mail);
+    return this.http.get<ApiResponse>(`${this.backendURL}/check/email/`,{ params: mailSent}).pipe(retry(3),
+          catchError((error) => {
+            console.log('ERROR en request HTTP' + error);
+            throw error
+          }));
+  }
   
 }

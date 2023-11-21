@@ -67,9 +67,11 @@ export class RecuperarPage implements OnInit {
       .then((response) => {
           if (response?.code === 18) {
             const hash:any  = response?.data;
-            const dataToSend = {hash: hash.hash}
+            const dataToSend = {hash: hash.hash, imCreating: true, email: this.email}
             console.log(hash);
-            this.router.navigate(['recovery-two/'], { queryParams: dataToSend });
+            this.router.navigate(['registro-final'], { queryParams: dataToSend });
+          } else {
+            this.messageToast('ERROR: Sus credenciales son incorrectas. Intente nuevamente.');
           }
         })
         .catch((error) => {

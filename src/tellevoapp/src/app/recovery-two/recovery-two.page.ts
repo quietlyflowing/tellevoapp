@@ -8,13 +8,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class RecoveryTwoPage implements OnInit {
 
-  constructor(private actRoute: ActivatedRoute) { }
+  constructor(private activated: ActivatedRoute) { }
 
   ngOnInit() {
-    this.actRoute.queryParams.subscribe(params => {
-      const receivedData = params;
-      console.log(receivedData); 
-    });
+    const queryParams = this.activated.snapshot['queryParams'];
+    console.log(queryParams);
   }
 
 }
