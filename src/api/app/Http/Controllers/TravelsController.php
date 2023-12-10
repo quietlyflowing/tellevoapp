@@ -68,11 +68,14 @@ class TravelsController extends Controller
             $travelId = $travel->id;
             $driverId = $travel->driver_id;
             $passengerId= $travel->passenger_id;
+            $isTaken = $travel->is_taken;
+            $startCoord = $travel->start_coordinates;
             while(true){
                 $data = json_encode(['message' => 'Viaje con id ' . $travel->id . ' en curso', 
                 'data' => [
                     'travel_id' => $travelId, 
-                    'driver_id' => $driverId, 
+                    'driver_id' => $driverId,
+                    'is_taken' => $isTaken, 
                     'passenger_id' => $passengerId]]);
                 echo "data: $data\n\n";
                 ob_flush();
@@ -82,12 +85,17 @@ class TravelsController extends Controller
                 if (is_null($travel)) {
                     break;
                 }
+                $travelId = $travel->id;
+                $driverId = $travel->driver_id;
+                $passengerId= $travel->passenger_id;
+                $isTaken = $travel->is_taken;
             }
             $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' cancelado.',
             'data' => [
                 'travel_id' => $travelId, 
                 'driver_id' => $driverId, 
-                'passenger_id' => $passengerId]
+                'passenger_id' => $passengerId,
+                'start_coordinates' => $startCoord]
             ]);
             echo "data: $data2\n\n";
             ob_flush();
