@@ -7,7 +7,7 @@ import { Geolocation } from '@capacitor/geolocation';
 //import { antPath } from 'leaflet-ant-path';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ToastController } from '@ionic/angular';
-
+import { TravelSSEServiceService } from 'src/app/services/travel-sse.service.service';
 
 @Component({
   selector: 'app-menu',
@@ -31,6 +31,9 @@ export class MenuPage implements OnInit, OnDestroy {
   vehicle: any;
   alertButtons = ['Entendido'];
   isAlertOpen: boolean = false;
+  time: number = 95;
+  areTraveling: number = 0;
+  math: Math = Math;
 
   setOpen(isOpen: boolean) {
     this.isAlertOpen = isOpen;
@@ -44,13 +47,19 @@ export class MenuPage implements OnInit, OnDestroy {
     private toastController: ToastController,
     private activeRoute: ActivatedRoute,
     private auth: AuthenticationService,
-    private alert: AlertController
+    private alert: AlertController, 
+    private sse: TravelSSEServiceService
   ) 
   {}
 
   @ViewChild(IonModal) modal!: IonModal;
 
- 
+  formatedTime(): string {
+    const hours = Math.floor(this.time / 3600);
+    const minutes = Math.floor((this.time % 3600) / 60);
+    const seconds = this.time % 60;
+    return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
 
   close() {
     this.modal.dismiss(null, 'Cerrar');
@@ -62,6 +71,15 @@ export class MenuPage implements OnInit, OnDestroy {
     if (ev.detail.role === 'confirm') {
       this.message = `Hello, ${ev.detail.data}!`;
     }
+  }
+
+  testButton() {
+    this.sse.connect(1).subscribe((event: MessageEvent)=>{
+      this.message = JSON.parse(event.data).data;
+      //@ts-ignore
+      console.log('ID del conductor: '+ this.message.driver_id);
+      console.log(event);
+    })
   }
 
   toggleMenu() {

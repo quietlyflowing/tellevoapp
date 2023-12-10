@@ -4,16 +4,8 @@
       <ion-img id="our-logo-menu" src="assets/img/TellevoappLogo.png"></ion-img>
     </ion-toolbar>
   </ion-header>
-  <!-- <ion-button class="ion-padding" (click)="goToClase()">¿Eres pasajero o conductor?.</ion-button> -->
-  <!-- <ion-button class="ion-padding">Tus viajes</ion-button> -->
-  <!-- <ion-button class="ion-padding">¡Quiero ser conductor también!</ion-button> -->
-  <!-- <ion-button class="ion-padding">Utiliza QR.</ion-button>
-  <ion-button class="ion-padding">Funcionalidades de la app.</ion-button>
-  <ion-button class="ion-padding" (click)="goToSobreNosotros()">Sobre nosotros.</ion-button>
-  <ion-button class="ion-padding" (click)="closeSession()"> Cerrar Sesión.</ion-button> -->
   <ion-list>
     <ion-item>
-      <!-- <span>Hola, {{userName}}</span> -->
       <ion-card>
         <ion-card-content>
           <ion-card-title>
@@ -23,9 +15,6 @@
         </ion-card-content>
       </ion-card>
     </ion-item>
-    <!-- <ion-item id="username-travel">
-       
-    </ion-item> -->
 
     <ion-alert  
       [isOpen]="isAlertOpen"  
@@ -99,7 +88,7 @@
   </ion-header>
   <ion-content class="menu-fondo">
     <ion-img src="assets/img/TellevoappLogo.png" id="ourlogo"></ion-img>
-    <div id="passenger-content" *ngIf="isDriver === 0">
+    <div id="passenger-content" *ngIf="isDriver === 0 && areTraveling === 0">
       <ion-text style="color: black;">
         <h2 style="padding-top:5%; padding-left: 2%; padding-bottom: 5%;">¿A dónde quieres ir hoy?</h2>
       </ion-text>
@@ -121,12 +110,17 @@
       </ion-card>
       <ion-button expand="full">Buscar pasajeros</ion-button>
     </div>
+    <div id="timer" *ngIf="areTraveling === 1"> 
+      <ion-row>
+        <ion-col offset="4"><h1><b>Tiempo de viaje: {{ formatedTime() }}</b></h1></ion-col>
+      </ion-row>
+    </div>
     <h2>Tu ubicación:</h2>
     <div id="mapa-principal"> <!-- DIV del mapa. No tocar-->
     </div>
     <ion-tabs>
       <ion-tab-bar slot="bottom">
-        <ion-tab-button>
+        <ion-tab-button (click)="testButton()">
           <ion-icon name="home" class="bar-button"></ion-icon>
           Inicio
         </ion-tab-button>
