@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TravelHistory;
+use App\Models\UserData;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,8 +66,14 @@ class TravelsController extends Controller
         }
         $response = new StreamedResponse(function() use($travel){
             $travelId = $travel->id;
+            $driverId = $travel->driver_id;
+            $passengerId= $travel->passenger_id;
             while(true){
-                $data = json_encode(['message' => 'Viaje con id ' . $travel->id . ' en curso']);
+                $data = json_encode(['message' => 'Viaje con id ' . $travel->id . ' en curso', 
+                'data' => [
+                    'travel_id' => $travelId, 
+                    'driver_id' => $driverId, 
+                    'passenger_id' => $passengerId]]);
                 echo "data: $data\n\n";
                 ob_flush();
                 flush();
@@ -76,15 +83,21 @@ class TravelsController extends Controller
                     break;
                 }
             }
-            $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' cancelado.']);
+            $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' cancelado.',
+            'data' => [
+                'travel_id' => $travelId, 
+                'driver_id' => $driverId, 
+                'passenger_id' => $passengerId]
+            ]);
             echo "data: $data2\n\n";
             ob_flush();
             flush();
-            die();
+            exit();
         });
         $response->headers->set('Content-Type', 'text/event-stream');
         $response->headers->set('Cache-Control', 'no-cache');
         $response->headers->set('Connection', 'keep-alive');
+        $response->headers->set('X-Accel-Buffering', 'no');
         
         return $response;
     }
@@ -104,28 +117,30 @@ class TravelsController extends Controller
         //   "payment_type": 1, 
         //   "travel_id": 1
         // }
-        // switch ($request->is_driver) {
-        //     case 0:
-        //         DB::beginTransaction();
-        //         try {
-        //             $finishedTravel = TravelHistory::create(['user_id' => $request->user()->id,
-        //                 'from_coord' => json_encode(json_decode($request->from_coord)),
-        //                 'to_coord' => json_encode($request->final_coord)]);
-        //         } catch (Exception $e) {
-
-        //         }
-        //         break;
-        //     case 1:
-        //         break;
-        // }
 
         $travel = CurrentTravel::where('id', $request->travel_id);
-
+        
         switch($request->is_driver) {
+            
             case 0:
                 DB::beginTransaction();
                 try {
                     $travel = $travel->where('passenger_id', '=', $request->user()->id)->firstOrFail();
+                    $travelHistoryUser = TravelHistory::create([
+                    'user_id' => $request->user()->id, 
+                    'from_coord' => $travel->start_coordinates, 
+                    'to_coord' => $request->end_coordinates,
+                    'transport_user' => UserData::where('user_id', '=', $travel->driver_id)->firstOrFail()->nombre,
+                    'total_payment' => $request->total_payment,
+                    'payment_type' => $request->payment_type]);
+                    $travelHistoryDriver = TravelHistory::create([
+                    'user_id' => $travel->driver_id, 
+                    'from_coord' => $travel->start_coordinates, 
+                    'to_coord' => $request->end_coordinates,
+                    'transport_user' => UserData::where('user_id', '=', $travel->driver_id)->firstOrFail()->nombre,
+                    'total_payment' => $request->total_payment,
+                    'payment_type' => $request->payment_type
+                    ]);
                     $travel->delete();
                     DB::commit();
                 } catch (Exception $e) {
@@ -137,6 +152,21 @@ class TravelsController extends Controller
                 DB::beginTransaction();
                 try {
                     $travel = $travel->where('driver_id', '=', $request->user()->id)->firstOrFail();
+                    $travelHistoryUser = TravelHistory::create([
+                        'user_id' => $request->user()->id, 
+                        'from_coord' => $travel->start_coordinates, 
+                        'to_coord' => $request->end_coordinates,
+                        'transport_user' => UserData::where('user_id', '=', $travel->driver_id)->firstOrFail()->nombre,
+                        'total_payment' => $request->total_payment,
+                        'payment_type' => $request->payment_type]);
+                        $travelHistoryDriver = TravelHistory::create([
+                        'user_id' => $travel->user_id, 
+                        'from_coord' => $travel->start_coordinates, 
+                        'to_coord' => $request->end_coordinates,
+                        'transport_user' => UserData::where('user_id', '=', $travel->passenger_id)->firstOrFail()->nombre,
+                        'total_payment' => $request->total_payment,
+                        'payment_type' => $request->payment_type
+                        ]);
                     $travel->delete();
                     DB::commit();
                 } catch (Exception $e) {
@@ -144,7 +174,8 @@ class TravelsController extends Controller
                     return self::returnJSONBuilder(500, 'No se ha podido cancelar el viaje. ERROR: ' . $e->getMessage(), 255);
                 }
                 break;
-        }       
+        }
+        
         return self::returnJSONBuilder(200, 'Viaje con id ' . $travel->id . ' cancelado correctamente.', 255);
     }
 }
