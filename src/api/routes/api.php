@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\TravelsController;
 use App\Http\Middleware\CheckApiKeys;
 use App\Http\Middleware\IsPasswordHashSetAndValid;
 use Illuminate\Http\Request;
@@ -40,6 +41,13 @@ Route::middleware(CheckApiKeys::class)->controller(RegistrationController::class
     Route::post('/update/password/logged', 'refreshPassword'); // <= Método para actualizar la contraseña logeado
     Route::post('/update/password', 'updatePassword')->middleware(IsPasswordHashSetAndValid::class);
 });
+
+Route::middleware(CheckApiKeys::class)->controller(TravelsController::class)->group(function(){
+    Route::post('iniciar/viaje', 'startTravel')->middleware('auth:sanctum');
+    Route::post('terminar/viaje', 'stopTravel')->middleware('auth:sanctum');
+    Route::get('monitor/viaje', 'monitorTravel');
+});
+
 
 Route::middleware(['auth:sanctum',CheckApiKeys::class])->get('/obtener/datos/usuario', [DataController::class, 'returnAllUserData']);
 

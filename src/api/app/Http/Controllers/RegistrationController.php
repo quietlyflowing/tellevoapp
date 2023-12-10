@@ -111,28 +111,6 @@ class RegistrationController extends Controller
             return self::returnJSONBuilder(500, $e->getMessage(), 255);
         } 
     }
-    // public function updateUserCredentials(Request $request) {
-    //     //{
-    //     // "email": "te.st@duocuc.cl",
-    //     // "password": "testpassword"
-    //     //    
-    //     //}
-    //     $inputArray = json_decode($request->getContent(), true);
-    //     DB::beginTransaction();
-    //     try {
-    //         $toUpdate = User::find(Auth::id());
-    //         foreach($inputArray as $key => $value){
-    //             $toUpdate->{$key} = $value;
-    //         }
-    //         $toUpdate->save();
-    //         DB::commit();
-    //         return self::returnJSONBuilder(200, 'Datos del usuario actualizados correctamente.', 255);
-    //     }
-    //     catch (\Exception $e) {
-    //         DB::rollback();
-    //         return self::returnJSONBuilder(500, $e->getMessage(), 255);
-    //     } 
-    // }
 
     public function refreshPassword(Request $request) {
         //{
