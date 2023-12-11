@@ -1,0 +1,34 @@
+<ion-content class="background" [fullscreen]="true">
+  <img class="logo" src="assets/img/TellevoappLogo.png" alt="Mi Imagen">
+  <div class="bigtext" *ngIf="imCreating === true">Registrarse</div>
+  <div class="bigtext" *ngIf="imCreating === false">Editar Datos</div>
+  <ion-list class="listas">
+    <ion-input class="text" label="Teléfono" labelPlacement="stacked" [clearOnEdit]="true" [(ngModel)]="phone"
+      placeholder="9 1234 56 78">
+    </ion-input>
+    <ion-input class="text" label="Dirección Hogar" labelPlacement="stacked" [clearOnEdit]="true"
+      [(ngModel)]="address_home" placeholder="Esquina Blanca 501, Maipú">
+    </ion-input>
+    <ion-input class="text" label="Dirección DuocUC" labelPlacement="stacked" [clearOnEdit]="true"
+      [(ngModel)]="address_duoc" placeholder="Esquina Blanca 501, Maipú">
+    </ion-input>
+    
+        <ion-checkbox label="Quiero Ser Conductor" *ngIf="imCreating === true" [(ngModel)]="driver">Quiero ser conductor</ion-checkbox>
+    
+  </ion-list>
+  
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col col-3>
+        <ion-button expand="full" *ngIf="imCreating === true" (click)="goBack()">Atrás</ion-button>
+        <ion-button expand="full" *ngIf="imCreating === false" (click)="goToMenu()">Cancelar</ion-button>
+      </ion-col>
+      <ion-col col-3>
+        <ion-button  *ngIf="imCreating === true" expand="full" (click)="goNext()">Continuar</ion-button>
+        <ion-button  *ngIf="imCreating === false" expand="full" (click)="updateData()">Guardar</ion-button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

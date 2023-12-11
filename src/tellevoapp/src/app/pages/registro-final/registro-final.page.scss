@@ -1,0 +1,120 @@
+/* Estilos para el menú desplegado */
+ion-menu {
+    --ion-background-color: #132CAA; /* Color de fondo del menú desplegado */
+    --ion-toolbar-background: #132CAA; /* Color de fondo de la barra de arriba */
+    --ion-text-color: #fff; /* Color de texto (letras) en el menú desplegado */
+    width: 70%; /* Ancho del menú */
+  }
+  
+  /* Estilos para el contenido del menú desplegado */
+  ion-content.ion-padding {
+    padding: 15px; /* Añade relleno a los elementos de contenido del menú */
+    font-size: 18px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Animación de cambio de color de fondo */
+  }
+  
+  ion-content.ion-padding:hover {
+    background-color: #f0f0f0; /* Cambia el color de fondo al pasar el cursor */
+  }
+  
+  /* Estilos para el encabezado de la página principal */
+  ion-header ion-toolbar {
+    background-color: #132CAA; /* Color de fondo de la barra de arriba en la página principal */
+    color: #fff; /* Color de texto (letras) en la barra de arriba en la página principal */
+  }
+  
+  ion-title {
+    font-size: 24px; /* Tamaño de fuente del título */
+  }
+
+  ion-header {
+    --ion-background-color: #132CAA; /* Color de fondo del menú desplegado */
+    --ion-toolbar-background: #132CAA; /* Color de fondo de la barra de arriba */
+    --ion-text-color: #fff; /* Color de texto (letras) en el menú desplegado */
+  }
+
+  .background {
+    --ion-background-color: #ffffff;
+  }
+  .centered-button {
+        display: flex;
+        justify-content: center;
+        font: sarabun;
+        height: 5%;
+        margin: 0 auto;
+        text-align: center;
+        width: 50%; /* Ajusta el ancho según tus preferencias */
+        margin-top: 40px;
+
+      }
+      
+.centered-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centrar verticalmente */
+        align-items: center; /* Centrar horizontalmente */
+        height: 80%; /* Opcional: asegura que el contenedor ocupe toda la altura disponible */
+      }
+
+.logo {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 5%;
+}
+
+.bigtext {
+    font-size: 200%;
+    font: sarabun;
+    font-weight: bold;
+    color: #002138;
+    margin: 0 auto;
+    text-align: center;
+    width: 50%; /* Ajusta el ancho según tus preferencias */
+    margin-top: 20%;
+    
+}
+.samlltext { 
+    background: white;
+    font: sarabun;
+    font-weight: bold;
+    color: #002138; 
+    font-size: 110%;
+}
+
+.text { 
+    background: white;
+    font: sarabun;
+    font-weight: bold;
+    color: #002138; 
+    font-size: 150%;
+    --placeholder-font-zise:110%;
+}
+
+.listas {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    height: 50%; /* Opcional: asegura que el contenedor ocupe toda la altura disponible */
+    margin-left: 10%;
+
+}
+
+ion-checkbox{
+    margin-top:10%;
+    justify-content: center;
+    margin-right:10%;
+}
+@media screen and (min-width: 360px ) and (max-width: 360px ) and (max-height: 740px) and (min-height: 740px) {
+  .bigtext {
+    font-size: 190%;
+  }
+  ion-input {
+    transform: scale(.88);
+    margin-right: 8%;
+  }
+}
