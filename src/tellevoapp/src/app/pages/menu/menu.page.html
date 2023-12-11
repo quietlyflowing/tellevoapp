@@ -125,7 +125,7 @@
     <div id="driver-content-travel" *ngIf="isDriver === 1 && areTraveling === 1 && middleStep === 0">
       <ion-card>
         <ion-card-header>
-          <ion-card-title><span><b>Viaje de {{ rideName}}</b></span></ion-card-title>
+          <ion-card-title><span><b>Viaje de {{rideName}}</b></span></ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <ul>
@@ -149,7 +149,7 @@
         <ion-card-content>
           <ul>
             <li><span><b>Conductor: </b>{{ rideName }}</span></li>
-            <li><span><b>Direccion Destino: </b>{{ endAddress }}</span></li>
+            <li><span><b>Direccion de destino: </b>{{ endAddress }}</span></li>
             <li id="contador-tiempo"><span><h3><b>Tiempo de viaje: {{ formatedTime() }}</b></h3></span></li>
             </ul>
         </ion-card-content>

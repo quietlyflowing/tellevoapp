@@ -11,6 +11,7 @@ import { MonitorTravelSSEServiceService } from 'src/app/services/monitor-travel-
 import { SeekTravelService } from 'src/app/services/seek-travel.service';
 import { WillBePickedUpService } from 'src/app/services/will-be-picked-up.service';
 import { BackendService } from 'src/app/services/backend.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
@@ -156,6 +157,13 @@ export class MenuPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
+  async endTravelAlert(dateString: string, endTariff: number){
+    const alert = await this.alert.create({
+      header: 'Viaje del ' + dateString,
+      message: 'Total a pagar: '+ endTariff,
+      buttons: ['Confirmar pago']
+    })
+  }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -213,21 +221,35 @@ export class MenuPage implements OnInit, OnDestroy {
 
 
   suscribeToMonitorTravel(travel: number) {
-    this.areTraveling = 1;
-    this.middleStep = 0;
     const travelNumber = travel;
     this.myTravelId = travel;
     this.time = 0;
     this.cdr.detectChanges();
-    this.monitorSSE.connect(travelNumber).subscribe((event: MessageEvent) => {
+    let internalTime: number = 0;
+    let internalTariff: number = 0;
+    let internalEndAddress: string = '';
+    const monitorSuscription = this.monitorSSE.connect(travelNumber).subscribe((event: MessageEvent) => {
       this.message = JSON.parse(event.data);
+      //@ts-ignore
+      this.endAddress =  this.message.end_direction;
+      this.areTraveling = 1;
+      this.middleStep = 0;
       this.time++;
+      internalTime = this.time;
+      
+      //@ts-ignore
+      this.ourTariff = this.message.tariff;
+      internalTariff = this.ourTariff
+      console.log(this.ourTariff);
       this.cdr.detectChanges();
       console.log(this.message);
+      console.log(this.ourTariff);
       //@ts-ignore
       if (this.message.code === 109) {
-        this.monitorSSE.disconnect();
+        monitorSuscription.unsubscribe()
         console.log('Desuscribiendo del viaje');
+        this.monitorSSE.disconnect();
+        //@ts-ignore 
         this.areTraveling = 0;
         this.middleStep = 0;
         this.cdr.detectChanges();
