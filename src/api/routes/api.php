@@ -43,8 +43,10 @@ Route::middleware(CheckApiKeys::class)->controller(RegistrationController::class
 });
 
 Route::middleware(CheckApiKeys::class)->controller(TravelsController::class)->group(function(){
-    Route::post('iniciar/viaje', 'startTravel')->middleware('auth:sanctum');
+    Route::post('iniciar/viaje', 'publishTravel')->middleware('auth:sanctum');
+    Route::get('buscar/viaje', 'seekAvailableTravels');
     Route::post('terminar/viaje', 'stopTravel')->middleware('auth:sanctum');
+    Route::get('monitor/viaje/usuario', 'willMyTravelBeTaken'); 
     Route::get('monitor/viaje', 'monitorTravel');
 });
 

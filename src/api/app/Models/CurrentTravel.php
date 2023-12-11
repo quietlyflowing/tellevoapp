@@ -10,5 +10,5 @@ class CurrentTravel extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'current_travels';
-    protected $fillable = ['passenger_id', 'driver_id', 'is_taken', 'start_coordinates'];
+    protected $fillable = ['passenger_id', 'driver_id', 'is_taken', 'tariff', 'start_coordinates', 'end_coordinates'];
 }
