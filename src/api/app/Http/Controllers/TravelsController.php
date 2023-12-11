@@ -194,7 +194,7 @@ class TravelsController extends Controller
                 //     'tariff' => $tariffValue],
                 // 'code' => 108,
                 // ]);
-                $data = $travel->toArray();
+                $data = $travel->toJson();
                 echo "data: $data\n\n";
                 ob_flush();
                 flush();
@@ -210,7 +210,7 @@ class TravelsController extends Controller
             }
             while($exitCounter < 5){
                 $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' terminado. Dándo la oportunidad para terminar limpiamente',
-                'data' => $data ,'code' => 109
+                'data' => json_decode($data) ,'code' => 109
                 ], JSON_UNESCAPED_UNICODE);
                 echo "data: $data2\n\n";
                 ob_flush();

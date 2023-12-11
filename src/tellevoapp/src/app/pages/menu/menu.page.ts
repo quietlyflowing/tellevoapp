@@ -225,9 +225,7 @@ export class MenuPage implements OnInit, OnDestroy {
     this.myTravelId = travel;
     this.time = 0;
     this.cdr.detectChanges();
-    let internalTime: number = 0;
     let internalTariff: number = 0;
-    let internalEndAddress: string = '';
     const monitorSuscription = this.monitorSSE.connect(travelNumber).subscribe((event: MessageEvent) => {
       this.message = JSON.parse(event.data);
       //@ts-ignore
@@ -235,7 +233,6 @@ export class MenuPage implements OnInit, OnDestroy {
       this.areTraveling = 1;
       this.middleStep = 0;
       this.time++;
-      internalTime = this.time;
       
       //@ts-ignore
       this.ourTariff = this.message.tariff;
@@ -246,9 +243,21 @@ export class MenuPage implements OnInit, OnDestroy {
       console.log(this.ourTariff);
       //@ts-ignore
       if (this.message.code === 109) {
+        const lastTime = this.time;
+        const lastMessage =  this.message;
         monitorSuscription.unsubscribe()
         console.log('Desuscribiendo del viaje');
         this.monitorSSE.disconnect();
+        console.log(lastMessage);
+        //@ts-ignore
+        console.log(lastMessage.data.updated_at) 
+        console.log(lastTime) 
+        //@ts-ignore
+        console.log(lastMessage.data.tariff);
+        //@ts-ignore
+        this.genericAlertWithoutHeader('Viaje a ' + lastMessage.data.end_direction, 
+        //@ts-ignore
+        'Fueron '+ lastTime + 'segundos y con un valor de '+ String(Math.floor(lastTime/60)*lastMessage.data.tarriff), ['Entendido']);
         //@ts-ignore 
         this.areTraveling = 0;
         this.middleStep = 0;
