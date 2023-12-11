@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tariff')->nullable()->default(null);
             $table->boolean('is_taken')->default(false);
             $table->json('start_coordinates');
-            $table->json('start_direction')->nullable();
+            $table->string('start_direction')->nullable();
             $table->json('end_coordinates');
             $table->string('end_direction')->nullable();
             $table->timestamps();
