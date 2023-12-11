@@ -15,22 +15,24 @@ class TravelsController extends Controller
     //
     public function publishTravel(Request $request)
     {
-        switch ($request->is_driver) {
             // {
-            //     "is_driver": 1,
+            // "passenger_name": "Dummy User"    
             // "start_coordinates": {
             //     "coord_x": 33.1235,
             //     "coord_y": -125.358
-            // },
+            //      },
             // "end_coordinates": {
             //  "coord_x": 55.123,
             //  "coord_y": 88, 198
+            //      }
             // }
-            // }
-            case 0:
                 DB::beginTransaction();
                 try {
-                    $travel = CurrentTravel::create(['passenger_id' => $request->user()->id, 'start_coordinates' => json_encode($request->start_coordinates), 'end_coordinates' => json_encode($request->end_coordinates)]);
+                    $travel = CurrentTravel::create([
+                        'passenger_id' => $request->user()->id, 
+                        'passenger_name' => $request->passenger_name,
+                        'start_coordinates' => json_encode($request->start_coordinates), 
+                        'end_coordinates' => json_encode($request->end_coordinates)]);
                     $travel->save();
                     DB::commit();
                 } catch (Exception $e) {
@@ -38,29 +40,6 @@ class TravelsController extends Controller
                     return self::returnJSONBuilder(500, 'ERROR: No se pudo iniciar el viaje. ' . $e->getMessage(), 255);
                 }
                 return self::returnJSONBuilder(200, 'Viaje del lado del usuario iniciado correctamente', 70, ['travel_id' => $travel->id]);
-
-            // case 1:
-            //     $travel = new CurrentTravel();
-            //     $travelId = -99;
-            //     try {
-            //         $travel = $travel->orderBy('created_at', 'desc')->whereNull('deleted_at')->where('is_taken', '=', '0')->firstOrFail();
-            //         $travelId = $travel->id;
-            //     } catch (Exception $e) {
-            //         return self::returnJSONBuilder(200, 'No hay viaje disponible aún', 80);
-            //     }
-            //     DB::beginTransaction();
-            //     try {
-            //         $toTake = CurrentTravel::find($travelId);
-            //         $toTake->update(['driver_id' => $request->user()->id, 'is_taken' => 1, 'tariff' => $request->tariff]);
-            //         DB::commit();
-            //     } catch (Exception $e) {
-            //         DB::rollBack();
-            //         return self::returnJSONBuilder(500, 'Error: No se puede marcar el viaje como no disponible ' . $e->getMessage(), 255);
-            //     }
-            //     return self::returnJSONBuilder(200, 'Viaje con id ' . $travelId . ' tomado correctamente.', 71, ['travel_id' => $travelId]);
-            default:
-                return self::returnJSONBuilder(500, 'No deberías estar viendo este endpoint',255);
-        }
     }
 
     public function seekAvailableTravels(Request $request){
@@ -75,7 +54,9 @@ class TravelsController extends Controller
                 try{
                     $travel = CurrentTravel::orderBy('created_at', 'desc')->whereNull('deleted_at')->where('is_taken', '=', 0)->firstOrFail();
                     $travelId = $travel->id;
-                    $travel->update(['driver_id' => $request->query('user_id'), 'is_taken' => 1, 'tariff' => $request->query('tariff')]);
+                    $passengerName = $travel->passenger_name;
+                    $userName = UserData::where('user_id', $request->query('user_id'))->firstOrFail()->nombre;
+                    $travel->update(['driver_id' => $request->query('user_id'), 'driver_name' => $userName, 'is_taken' => 1, 'tariff' => $request->query('tariff')]);
                     DB::commit();
                     break;
                     } catch (Exception $e) {
@@ -102,7 +83,7 @@ class TravelsController extends Controller
             }
             while($exitCounter <5) {
                 $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' tomado. Dando oportunidad para terminar limpiamente', 
-                'travel_id' => $travelId , 'code' => 105], JSON_UNESCAPED_UNICODE);
+                'travel_id' => $travelId, 'passenger_name' => $passengerName, 'code' => 105], JSON_UNESCAPED_UNICODE);
                 echo "data: $data2\n\n";
                 ob_flush();
                 flush();
@@ -122,6 +103,8 @@ class TravelsController extends Controller
     public function willMyTravelBeTaken(Request $request){
         $response = new StreamedResponse(function () use($request) {
             $travelId = -99;
+            $passengerName = '';
+            $driverName = '';
             $exitCounter = 0;
             define('SEEKSTARTEDAT', \Carbon\Carbon::now());
             while(true){
@@ -129,6 +112,7 @@ class TravelsController extends Controller
                     $travel = CurrentTravel::orderBy('created_at', 'desc')->where('passenger_id', $request->query('user_id'))->whereNull('deleted_at')->firstOrFail();
                     if($travel->is_taken == 1) {
                         $travelId = $travel->id;
+                        $driverName = $travel->driver_name;
                         break;
                     } else {
                         $data = json_encode(['message' => 'Todavía ningún conductor ha tomado el viaje', 'code' => 80], JSON_UNESCAPED_UNICODE);
@@ -161,7 +145,7 @@ class TravelsController extends Controller
             }
             while($exitCounter < 5) {
                 $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' tomado. Dando oportunidad para terminar limpiamente', 
-                'travel_id' => $travelId , 'code' => 105], JSON_UNESCAPED_UNICODE);
+                'travel_id' => $travelId , 'driver_id'=> $driverName, 'code' => 105], JSON_UNESCAPED_UNICODE);
                 echo "data: $data2\n\n";
                 ob_flush();
                 flush();
@@ -189,6 +173,8 @@ class TravelsController extends Controller
             $travelId = $travel->id;
             $driverId = $travel->driver_id;
             $passengerId= $travel->passenger_id;
+            $driverName = $travel->driver_name;
+            $passengerName = $travel->passsenger_name;
             $isTaken = $travel->is_taken;
             $startCoord = $travel->start_coordinates;
             $tariffValue = $travel->tariff;
@@ -198,8 +184,10 @@ class TravelsController extends Controller
                 'data' => [
                     'travel_id' => $travelId, 
                     'driver_id' => $driverId,
+                    'driver_name' => $driverName,
                     'is_taken' => $isTaken, 
                     'passenger_id' => $passengerId,
+                    'passenger_name' => $passengerName,
                     'tariff' => $tariffValue],
                 'code' => 108,
                 ]);
@@ -220,9 +208,11 @@ class TravelsController extends Controller
                 $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' terminado. Dándo la oportunidad para terminar limpiamente',
                 'data' => [
                     'travel_id' => $travelId, 
-                    'driver_id' => $driverId, 
+                    'driver_id' => $driverId,
+                    'driver_name' => $driverName,
                     'passenger_id' => $passengerId,
                     'start_coordinates' => $startCoord,
+                    'passenger_name' => $passengerName,
                     'tariff' => $tariffValue],
                 'code' => 109
                 ], JSON_UNESCAPED_UNICODE);

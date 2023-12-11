@@ -32,7 +32,7 @@ Route::get('/empty', [LoginController::class, 'noSession'])->name("login");
 
 
 Route::middleware(CheckApiKeys::class)->controller(RegistrationController::class)->group(function () {
-    Route::post('/check/email/', 'checkValidMail');
+    Route::get('/check/email/', 'checkValidMail');
     Route::post('/check/question', 'checkQuestion');
     Route::post('/register','register');
     Route::post('/update/vehicle', 'updateVehicleInfo')->middleware('auth:sanctum');

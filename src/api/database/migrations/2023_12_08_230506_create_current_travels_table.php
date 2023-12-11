@@ -13,7 +13,9 @@ return new class extends Migration
         Schema::create('current_travels', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('passenger_id');
+            $table->string('passenger_name');
             $table->unsignedBigInteger('driver_id')->nullable()->default(null);
+            $table->string('driver_name')->nullable()->default(null);
             $table->unsignedBigInteger('tariff')->nullable()->default(null);
             $table->boolean('is_taken')->default(false);
             $table->json('start_coordinates');
