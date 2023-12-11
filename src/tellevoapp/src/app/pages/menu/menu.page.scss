@@ -71,32 +71,43 @@ ion-tab-button {
 
 }
 
-#mapa-principal {
-  /* CSS para el DIV del mapa*/
-  width: 90%;
-  height: 50%;
-  position: relative;
-  top: 2%;
-  left: 5%;
-  border: 2px solid #132CAA;
-  border-radius: 0.5rem;
-  outline-style: none;
-}
-
 #ourlogo {
   max-width: 20%;
   max-height: 5%;
   margin-left: 2%;
   margin-top: 5%;
 }
-#our-logo-menu {
-  display: block;
-  width: 75%;
-  height: 79%;
-  object-fit: inherit;
-  object-position: inherit;
-  margin-left: .5rem;
+
+ion-spinner {
+  color: #F8b31c
 }
+
+ion-item ion-icon {
+  color: #ffffff;
+}
+
+ion-menu ion-card {
+  text-align: center;
+  box-shadow: none !important;
+}
+
+ion-menu ion-card-title {
+  color:#ffffff;
+  border-bottom: 1px solid #ffffff;
+}
+
+ion-menu ion-card-content {
+  color: #ffffff;
+  padding-top:2%
+}
+// #our-logo-menu {
+//   display: block;
+//   width: 75%;
+//   height: 79%;
+//   object-fit: inherit;
+//   object-position: inherit;
+//   margin-left: .5rem;
+// }
 
 #username-menu{
   transform: scale(1.5);
@@ -109,36 +120,37 @@ ion-tab-button {
   font-weight: bold;
   margin-left: 10rem;
 }
-@media only screen and (-webkit-min-device-pixel-ratio: 4),
-only screen and (min--moz-device-pixel-ratio: 4),
-only screen and (-o-min-device-pixel-ratio: 4/1),
-only screen and (min-device-pixel-ratio: 4) {
-  #username-menu{
-    transform: scale(1.2);
-  }
-  #our-logo-menu {
-    display: block;
-    width: 75%;
-    height: 79%;
-    object-fit: inherit;
-    object-position: inherit;
-    margin-left: .5rem;
-  }
+@media screen and (min-width: 360px ) and (max-width: 360px ) and (max-height: 740px) and (min-height: 740px) {
+ion-item ion-icon {
+  transform: scale(1.25);
+  padding-right: 8%;
+  padding-left: 4%;
+}
+ion-menu ion-card-title {
+  font-size: 180%;
+  font-weight: bolder;
+}
+ion-menu ion-card-content
+{
+  font-size: 120%;
+  font-weight: bold;
+}
+#our-logo-menu {
+  padding: 5%;
+}
+#mapa-principal {
+  /* CSS para el DIV del mapa*/
+  width: 90%;
+  height: 50%;
+  position: relative;
+  left: 5%;
+  border: 2px solid #132CAA;
+  border-radius: 0.5rem;
+  outline-style: none;
+}
 
-  #mapa-principal {
-    /* CSS para el DIV del mapa*/
-    width: 88%;
-    height: 48%;
-    position: relative;
-    top: -1%;
-    left: 5%;
-    border: 2px solid #132CAA;
-    border-radius: 0.5rem;
-    outline-style: none;
-  }
-
-  h2 {
-    padding-left: 5%
-  }
+h2 {
+  padding-left: 6%;
+}
 
 }

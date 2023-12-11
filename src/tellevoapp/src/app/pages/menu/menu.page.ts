@@ -22,8 +22,10 @@ export class MenuPage implements OnInit, OnDestroy {
   map!: Leaflet.Map
   isDriver: number = 2;
   message: string = "test";
-  name: string = '';
+  endPlace: string = '';
+  endAddress: string = '';
   userName: string = '';
+  rideName: string = '';
   resolvedData: any;
   geoData: any;
   travelsArray: any[] = [];
@@ -36,8 +38,11 @@ export class MenuPage implements OnInit, OnDestroy {
   myTravelId: number = 0;
   travelTariff: number = 0;
   userId: number = -99;
+  middleStep: number = 0;
   homeCoords: object = { 'coord_x': 0, 'coord_y': 0 };
   duocCoords: object = { 'coord_x': 0, 'coord_y': 0 };
+  homeAddress: string = '';
+  duocAddress: string = '';
   public tariffInput = [
     {
       type: 'number',
@@ -73,6 +78,8 @@ export class MenuPage implements OnInit, OnDestroy {
       handler: () => {
         console.log('Se solicitó viaje al hogar.');
         //@ts-ignore
+        this.endPlace = 'al Hogar';
+        this.endAddress = this.homeAddress;
         this.startUserTravel(this.homeCoords);
       }
     },
@@ -83,6 +90,8 @@ export class MenuPage implements OnInit, OnDestroy {
         console.log('Se solicitó viaje a la sede de DuocUC');
         //@ts-ignore
         //this.startTravelling();
+        this.endPlace = 'a DuocUC';
+        this.endAddress = this.duocAddress;
         this.startUserTravel(this.duocCoords);
       }
     },
@@ -98,6 +107,8 @@ export class MenuPage implements OnInit, OnDestroy {
       text: 'Detener viaje',
       handler: () => {
         console.log('Se solicitó detener el viaje');
+        this.seekSSE.disconnect();
+        this.willSSE.disconnect();
         this.stopTravelling();
       }
     }
@@ -148,10 +159,12 @@ export class MenuPage implements OnInit, OnDestroy {
   }
 
   async startUserTravel(endCoord: object) {
+    this.middleStep = 1;
+    this.cdr.detectChanges();
     try {
       const position = await Geolocation.getCurrentPosition();
       const data: object = {
-        'is_driver': this.isDriver,
+        'passenger_name': this.userName,
         'start_coordinates': {
           'coord_x': position.coords.latitude,
           'coord_y': position.coords.longitude,
@@ -191,6 +204,7 @@ export class MenuPage implements OnInit, OnDestroy {
 
   suscribeToMonitorTravel(travel: number) {
     this.areTraveling = 1;
+    this.middleStep = 0;
     const travelNumber = travel;
     this.myTravelId = travel;
     this.time = 0;
@@ -216,6 +230,7 @@ export class MenuPage implements OnInit, OnDestroy {
   }
 
   suscribeToSeekTravel(tariff: number, userId: number) {
+    this.middleStep = 1;
     console.log('Todo listo. Buscando un viaje');
     this.seekSSE.connect(tariff, userId).subscribe((event: MessageEvent) => {
       this.message = JSON.parse(event.data);
@@ -223,6 +238,7 @@ export class MenuPage implements OnInit, OnDestroy {
       //@ts-ignore
       if (this.message.code === 81) {
         console.log('No hay viajes disponibles. Cerrando');
+        this.middleStep = 0;
         this.seekSSE.disconnect();
         this.genericAlertWithoutHeader('No hay viajes disponibles', 'Lo sentimos. Se agotó el tiempo de espera y no hay viajes disponibles. Intente más tarde', ['Entendido']);
       }
@@ -236,6 +252,7 @@ export class MenuPage implements OnInit, OnDestroy {
     },
       (error) => {
         console.log(error)
+        this.middleStep = 0;
         this.genericAlertWithoutHeader('Error', 'Ocurrió un error inesperado. Por favor intente más tarde.', ['Entendido']);
         throw error;
       });
@@ -249,11 +266,19 @@ export class MenuPage implements OnInit, OnDestroy {
       //@ts-ignore
       if(this.message.code === 81){
         console.log('Ningún conductor ha tomado el viaje. Cerrando');
+        this.middleStep = 0;
+        this.cdr.detectChanges();
         this.willSSE.disconnect();
         this.genericAlertWithoutHeader('No hay conductores disponibles', 'Lo sentimos. Se agotó el tiempo de espera y no hay conductores disponibles. Intente más tarde', ['Entendido']);
       }
       //@ts-ignore
       if(this.message.code === 105){
+        //@ts-ignore
+        const driver = this.message.driver_id;
+        //@ts-ignore
+        console.log(this.message.driver_id);
+        console.log(driver);
+        this.rideName = driver;
         this.willSSE.disconnect();
         console.log('Viaje Encontrado. Suscribiendo al endpoint de monitoreo');
         //@ts-ignore
@@ -261,6 +286,8 @@ export class MenuPage implements OnInit, OnDestroy {
       }
     },(error)=>{
       console.log(error)
+      this.middleStep = 0;
+      this.cdr.detectChanges();
       this.genericAlertWithoutHeader('Error', 'Ocurrió un error inesperado. Por favor intente más tarde.', ['Entendido']);
       throw error;
     })
@@ -340,6 +367,8 @@ export class MenuPage implements OnInit, OnDestroy {
     this.userName = this.resolvedData.data[0].datos.nombre;
     this.duocCoords = { ...this.resolvedData.data[0].datos.cord_duoc };
     this.homeCoords = { ...this.resolvedData.data[0].datos.cord_hogar };
+    this.duocAddress = this.resolvedData.data[0].datos.direccion_duoc;
+    this.homeAddress = this.resolvedData.data[0].datos.direccion_hogar;
     console.log(this.duocCoords);
     console.log(this.homeCoords);
     this.travelsArray = this.resolvedData.data[0].travels;

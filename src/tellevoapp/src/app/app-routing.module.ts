@@ -51,16 +51,16 @@ const routes: Routes = [
   {
     path: 'registro-data',
     resolve: {resolvedData: IntraPageDataService},
-    loadChildren: () => import('./registro-data/registro-data.module').then( m => m.RegistroDataPageModule)
+    loadChildren: () => import('./pages/registro-data/registro-data.module').then( m => m.RegistroDataPageModule)
   },
   {
     path: 'registro-vehiculo',
     resolve: {resolvedData: IntraPageDataService},
-    loadChildren: () => import('./registro-vehiculo/registro-vehiculo.module').then( m => m.RegistroVehiculoPageModule)
+    loadChildren: () => import('./pages/registro-vehiculo/registro-vehiculo.module').then( m => m.RegistroVehiculoPageModule)
   },
   {
     path: 'registro-final',
-    loadChildren: () => import('./registro-final/registro-final.module').then( m => m.RegistroFinalPageModule)
+    loadChildren: () => import('./pages/registro-final/registro-final.module').then( m => m.RegistroFinalPageModule)
   },
 
 
