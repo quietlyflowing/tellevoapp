@@ -1,0 +1,11 @@
+<ion-grid>
+    <ion-row>
+        <ion-col>
+            <ion-header class="ion-no-border">
+                <ion-toolbar>
+                    <ion-img id="our-logo-menu" src="assets/img/TellevoappLogo.png"></ion-img>
+                </ion-toolbar>
+            </ion-header>
+        </ion-col>
+    </ion-row>
+</ion-grid>
