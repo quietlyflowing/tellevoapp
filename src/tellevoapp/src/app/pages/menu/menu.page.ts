@@ -234,6 +234,9 @@ export class MenuPage implements OnInit, OnDestroy {
       }
     },
       (error) => {
+        this.areTraveling = 0;
+        this.middleStep = 0;
+        this.genericAlertWithoutHeader('Error', 'Ocurrió un error inesperado. Por favor intente más tarde.', ['Entendido']);
         console.log('Ocurrió un error. Intentando reconectar');
         console.log(error);
         this.cdr.detectChanges();

@@ -203,7 +203,7 @@ class TravelsController extends Controller
                 if (is_null($travel)) {
                     break;
                 }
-                // $travelId = $travel->id;
+                $travelId = $travel->id;
                 // $driverId = $travel->driver_id;
                 // $passengerId= $travel->passenger_id;
                 // $isTaken = $travel->is_taken;
