@@ -179,6 +179,7 @@ class TravelsController extends Controller
             // $passengerName = $travel->passsenger_name;
             // $isTaken = $travel->is_taken;
             // $startCoord = $travel->start_coordinates;
+            //lorón
             // $tariffValue = $travel->tariff;
             $exitCounter = 0;
             while(true){
