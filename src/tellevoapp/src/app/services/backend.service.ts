@@ -234,6 +234,12 @@ export class BackendService {
     );
   }
 
-  getAddressFromCoordinates(){}
-  getCoordinatesFromAddress(){}
+  getAddressFromCoordinates(lat: number, lon: number){
+    const url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + String(lat) + '&lon='+ String(lon);
+    return this.http.get<any>(url).pipe(retry(3));
+  }
+  getCoordinatesFromAddress(address: string){
+    const url = 'https://nominatim.openstreetmap.org/search?q=' + address + '&format=json';
+    return this.http.get<any>(url).pipe(retry(3));
+  }
 }

@@ -76,24 +76,24 @@ export class MenuPage implements OnInit, OnDestroy {
     {
       text: 'Casa',
       role: 'casa',
-      handler: () => {
+      handler: async () => {
         console.log('Se solicitó viaje al hogar.');
         //@ts-ignore
         this.endPlace = 'al Hogar';
         this.endAddress = this.homeAddress;
-        this.startUserTravel(this.homeCoords);
+        this.startUserTravel(this.homeCoords, this.endAddress);   
       }
     },
     {
       text: 'DuocUC',
       role: 'duoc',
-      handler: () => {
+      handler: async () => {
         console.log('Se solicitó viaje a la sede de DuocUC');
         //@ts-ignore
         //this.startTravelling();
         this.endPlace = 'a DuocUC';
         this.endAddress = this.duocAddress;
-        this.startUserTravel(this.duocCoords);
+        this.startUserTravel(this.duocCoords, this.endAddress);   
       }
     },
   ];
@@ -164,18 +164,22 @@ export class MenuPage implements OnInit, OnDestroy {
     }
   }
 
-  async startUserTravel(endCoord: object) {
+  async startUserTravel(endCoord: object, endAddress: string) {
     this.middleStep = 1;
     this.cdr.detectChanges();
     try {
       const position = await Geolocation.getCurrentPosition();
+      const answer = await this.backend.getAddressFromCoordinates(position.coords.latitude, position.coords.longitude).toPromise();
+      const address = answer.address.road + ' '+ answer.address.house_number + ', ' + answer.address.suburb;
       const data: object = {
         'passenger_name': this.userName,
         'start_coordinates': {
           'coord_x': position.coords.latitude,
           'coord_y': position.coords.longitude,
         },
-        'end_coordinates': endCoord
+        'start_address': address,
+        'end_coordinates': endCoord,
+        'end_address': endAddress
       }
       console.log('Datos Preparados. Solicitando viaje');
       this.backend.publishTravel(data).toPromise()
@@ -225,6 +229,7 @@ export class MenuPage implements OnInit, OnDestroy {
         this.monitorSSE.disconnect();
         console.log('Desuscribiendo del viaje');
         this.areTraveling = 0;
+        this.middleStep = 0;
         this.cdr.detectChanges();
       }
     },
@@ -306,9 +311,7 @@ export class MenuPage implements OnInit, OnDestroy {
   }
 
   async stopTravelling() {
-    if (this.areTraveling !== 1) {
-      console.log('ERROR: No estamos viajando');
-    } else {
+    this.middleStep = 0;
       console.log('Solicitando el fin del viaje')
       try {
         const position = await Geolocation.getCurrentPosition();
@@ -332,7 +335,6 @@ export class MenuPage implements OnInit, OnDestroy {
         console.log(error)
         throw error;
       }
-    }
   }
 
   toggleMenu() {
@@ -391,6 +393,14 @@ export class MenuPage implements OnInit, OnDestroy {
   }
 
   closeSession(): void {
+    if(this.areTraveling === 1) {
+      this.stopTravelling();
+    }
+    if(this.middleStep === 1){
+      this.seekSSE.disconnect();
+      this.monitorSSE.disconnect();
+    }
+    this.map.remove();
     this.router.navigate(['/inicio']);
     this.auth.closeSession();
   }

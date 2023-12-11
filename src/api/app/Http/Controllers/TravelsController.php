@@ -32,7 +32,9 @@ class TravelsController extends Controller
                         'passenger_id' => $request->user()->id, 
                         'passenger_name' => $request->passenger_name,
                         'start_coordinates' => json_encode($request->start_coordinates), 
-                        'end_coordinates' => json_encode($request->end_coordinates)]);
+                        'end_coordinates' => json_encode($request->end_coordinates),
+                        'start_direction' => $request->start_address,
+                        'end_direction' => $request->end_address]);
                     $travel->save();
                     DB::commit();
                 } catch (Exception $e) {
@@ -178,7 +180,7 @@ class TravelsController extends Controller
             // $isTaken = $travel->is_taken;
             // $startCoord = $travel->start_coordinates;
             // $tariffValue = $travel->tariff;
-            // $exitCounter = 0;
+            $exitCounter = 0;
             while(true){
                 // $data = json_encode(['message' => 'Viaje con id ' . $travel->id . ' en curso', 
                 // 'data' => [

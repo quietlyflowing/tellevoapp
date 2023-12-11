@@ -57,36 +57,6 @@
   </ion-tabs>
 
 </ion-menu>
-<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Historial de Viajes</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="close()" [strong]="true">Cerrar</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ion-item *ngFor="let item of travelsArray">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Viaje del {{item.created_at | date: 'd \'de\' MMMM \'del\' yyyy' }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ul>
-              <li><span><b>Inicio: {{item.from_coord.address}}</b></span></li>
-              <li><span><b>Término: {{item.to_coord.address}}</b></span></li>
-              <li *ngIf="isDriver === 0"><span><b>Conductor: </b> {{item.transport_user}}</span></li>
-              <li *ngIf="isDriver === 1"><span><b>Pasajero: </b> {{item.transport_user}}</span></li>
-              <li><span><b>Total pagado</b> {{item.total_payment}}</span></li>
-            </ul>
-          </ion-card-content>
-        </ion-card>
-      </ion-item>
-    </ion-content>
-  </ng-template>
-</ion-modal>
 
 
 <div class="ion-page" id="main-content">
@@ -159,7 +129,7 @@
         </ion-card-header>
         <ion-card-content>
           <ul>
-            <li><span><b>Direccion de estino: </b>{{ endAddress }}</span></li>
+            <li><span><b>Direccion de destino: </b>{{ endAddress }}</span></li>
             <li><span><h3><b>Tiempo de viaje: {{ formatedTime() }}</b></h3></span></li>
             <li id="contador-tiempo">
               <span>
@@ -229,6 +199,36 @@
         <ion-tab-button id="open-modal" *ngIf="areTraveling === 0 && middleStep === 0">
           <ion-icon name="analytics-outline" class="bar-button"></ion-icon>
           Historial
+          <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+            <ng-template>
+              <ion-header>
+                <ion-toolbar>
+                  <ion-title>Historial de Viajes</ion-title>
+                  <ion-buttons slot="end">
+                    <ion-button (click)="close()" [strong]="true">Cerrar</ion-button>
+                  </ion-buttons>
+                </ion-toolbar>
+              </ion-header>
+              <ion-content class="ion-padding">
+                <ion-item *ngFor="let item of travelsArray">
+                  <ion-card>
+                    <ion-card-header>
+                      <ion-card-title>Viaje del {{item.created_at | date: 'd \'de\' MMMM \'del\' yyyy' }}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ul>
+                        <li><span><b>Inicio: {{item.from_coord.address}}</b></span></li>
+                        <li><span><b>Término: {{item.to_coord.address}}</b></span></li>
+                        <li *ngIf="isDriver === 0"><span><b>Conductor: </b> {{item.transport_user}}</span></li>
+                        <li *ngIf="isDriver === 1"><span><b>Pasajero: </b> {{item.transport_user}}</span></li>
+                        <li><span><b>Total pagado</b> {{item.total_payment}}</span></li>
+                      </ul>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-item>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
         </ion-tab-button>
         <ion-tab-button id="stop-travel" *ngIf="areTraveling===1 || middleStep === 1">
           <ion-icon name="stop"></ion-icon>
