@@ -1,3 +1,5 @@
+
+
 <ion-menu contentId="main-content">
   <ion-header class="ion-no-border">
     <ion-toolbar>
@@ -16,19 +18,14 @@
       </ion-card>
     </ion-item>
 
-    <ion-alert  
-      [isOpen]="isAlertOpen"  
-      header="Pronto"
-      message="No hubo tiempo para crear esta funcionalidad antes de la presentación." 
-      [buttons]="alertButtons"></ion-alert>
-      <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeData()">
-        <span>Cambiar Datos Personales</span>
-        <ion-ripple-effect></ion-ripple-effect>
-      </ion-item>
-      <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeVehicleData()" *ngIf="isDriver===1">
-        <span>Cambiar Datos del Vehículo</span>
-        <ion-ripple-effect></ion-ripple-effect>
-      </ion-item>
+    <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeData()">
+      <span>Cambiar Datos Personales</span>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-item>
+    <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeVehicleData()" *ngIf="isDriver===1">
+      <span>Cambiar Datos del Vehículo</span>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-item>
     <ion-item class="ion-activatable ripple-parent circle" *ngIf="isDriver===0">
       <span>¡Quiero ser conductor!</span>
       <ion-ripple-effect></ion-ripple-effect>
@@ -90,12 +87,11 @@
     <ion-img src="assets/img/TellevoappLogo.png" id="ourlogo"></ion-img>
     <div id="passenger-content" *ngIf="isDriver === 0 && areTraveling === 0">
       <ion-text style="color: black;">
-        <h2 style="padding-top:5%; padding-left: 2%; padding-bottom: 5%;">¿A dónde quieres ir hoy?</h2>
+        <h2 style="padding-top:5%; padding-left: 2%; padding-bottom: 5%;">¡Hola {{userName}}!</h2>
       </ion-text>
-      <ion-button expand="full" (click)="setOpen(true)">Hogar</ion-button>
-      <ion-button expand="full">DuocUC</ion-button>
     </div>
-    <div id="driver-content" *ngIf="isDriver === 1">
+
+    <div id="driver-content" *ngIf="isDriver === 1 && areTraveling === 0">
       <ion-card>
         <ion-card-header>
           <ion-card-title style="margin-bottom: -5%;"><span><b>Conductor:</b> {{userName}}</span></ion-card-title>
@@ -108,11 +104,13 @@
           </ul>
         </ion-card-content>
       </ion-card>
-      <ion-button expand="full">Buscar pasajeros</ion-button>
+      <!-- <ion-button expand="full">Buscar pasajeros</ion-button> -->
     </div>
-    <div id="timer" *ngIf="areTraveling === 1"> 
+    <div id="timer" *ngIf="areTraveling === 1">
       <ion-row>
-        <ion-col offset="4"><h1><b>Tiempo de viaje: {{ formatedTime() }}</b></h1></ion-col>
+        <ion-col>
+          <h1><b>Tiempo de viaje: {{ formatedTime() }}</b></h1>
+        </ion-col>
       </ion-row>
     </div>
     <h2>Tu ubicación:</h2>
@@ -120,13 +118,26 @@
     </div>
     <ion-tabs>
       <ion-tab-bar slot="bottom">
-        <ion-tab-button (click)="testButton()">
-          <ion-icon name="home" class="bar-button"></ion-icon>
-          Inicio
+        <ion-tab-button id="user-travel" *ngIf="isDriver === 0 && areTraveling === 0">
+          <ion-icon name="car" id="user-travel" class="bar-button"></ion-icon>
+          Viajar
+          <ion-alert trigger="user-travel" header="Iniciar viaje" subHeader="¿A dónde desea ir?"
+            [buttons]="travelButton"></ion-alert>
         </ion-tab-button>
-        <ion-tab-button id="open-modal">
+        <ion-tab-button id="driver-travel" *ngIf="areTraveling === 0 && isDriver === 1">
+          <ion-icon name="search" class="bar-button"></ion-icon>
+          Buscar viaje
+          <ion-alert trigger="driver-travel" header="Por favor, ingrese su tarifa"
+            subHeader="El valor de la tarifa es por minuto" [inputs]="tariffInput" [buttons]="tariffButton"></ion-alert>
+        </ion-tab-button>
+        <ion-tab-button id="open-modal" *ngIf="areTraveling === 0">
           <ion-icon name="list" class="bar-button"></ion-icon>
           Historial
+        </ion-tab-button>
+        <ion-tab-button id="stop-travel" *ngIf="areTraveling===1">
+          <ion-icon name="stop"></ion-icon>
+          Detener viaje
+          <ion-alert trigger="stop-travel" header="¿Qué desea hacer?" subHeader="¿Desea detener su viaje?" [buttons]="stopButton"></ion-alert>
         </ion-tab-button>
         <ion-tab-button (click)="toggleMenu()">
           <ion-icon name="person" class="bar-button"></ion-icon>

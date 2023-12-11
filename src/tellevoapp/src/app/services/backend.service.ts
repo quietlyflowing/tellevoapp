@@ -198,4 +198,39 @@ export class BackendService {
           }));
   }
   
+  publishTravel(form: object){
+    return from(this.storage.getBearerToken())
+    .pipe(
+      mergeMap((retrieved) => {
+        const token = retrieved || '';
+        console.log('TOKEN ' + retrieved + ' recovered.');
+        const header = new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        });
+        return this.http.post<DataGetResponse>(`${this.backendURL}/iniciar/viaje`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
+          catchError((error) => {
+            console.log('ERROR en request HTTP' + error);
+            throw error
+          }));
+      })
+    );
+  }
+
+  deleteTravel(form: object){
+    return from(this.storage.getBearerToken())
+    .pipe(
+      mergeMap((retrieved) => {
+        const token = retrieved || '';
+        console.log('TOKEN ' + retrieved + ' recovered.');
+        const header = new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        });
+        return this.http.post<DataGetResponse>(`${this.backendURL}/terminar/viaje`, form ,{ params: this.apiAppended, headers: header }).pipe(retry(3),
+          catchError((error) => {
+            console.log('ERROR en request HTTP' + error);
+            throw error
+          }));
+      })
+    );
+  }
 }
