@@ -17,13 +17,18 @@ class DataController extends Controller
         $user = User::where('id', '=', $pk);
         if($checkUser->IS_DRIVER === 1) {
            $data = $user->with('datos', 'vehiculos', 'travels')->get()->toArray();
+           $data[0]['datos']['cord_duoc'] = json_decode($data[0]['datos']['cord_duoc']);
+           $data[0]['datos']['cord_hogar'] = json_decode($data[0]['datos']['cord_hogar']);
             return self::returnJSONBuilder(200, 'Registro Solicitado Encontrado', 0, $data);
         } 
         $data = $user->with('datos', 'travels')->get()->toArray();
+        $data[0]['datos']['cord_duoc'] = json_decode($data[0]['datos']['cord_duoc']);
+        $data[0]['datos']['cord_hogar'] = json_decode($data[0]['datos']['cord_hogar']);
         foreach($data[0]['travels'] as $k => $v){
             $data[0]['travels'][$k]['from_coord'] = json_decode($v['from_coord'], true);
             $data[0]['travels'][$k]['to_coord'] = json_decode($v['to_coord'], true);
         }
+        
         return self::returnJSONBuilder(200, 'Registro Solicitado Encontrado', 0, $data);
     }
 }
