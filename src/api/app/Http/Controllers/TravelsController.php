@@ -209,7 +209,7 @@ class TravelsController extends Controller
                 // $isTaken = $travel->is_taken;
             }
             while($exitCounter < 5){
-                $data2 = json_encode(['message' => 'Viaje con id ' . $travel->id . ' terminado. Dándo la oportunidad para terminar limpiamente',
+                $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' terminado. Dándo la oportunidad para terminar limpiamente',
                 'data' => $travel->toArray() ,'code' => 109
                 ], JSON_UNESCAPED_UNICODE);
                 echo "data: $data2\n\n";
