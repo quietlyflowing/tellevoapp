@@ -97,7 +97,7 @@
     <div id="user-content-idle" *ngIf="isDriver === 0 && areTraveling === 0 && middleStep === 0">
       <ion-card>
         <ion-card-header>
-          <ion-card-title><span><b>¡Hola:</b> {{userName}}!</span></ion-card-title>
+          <ion-card-title><span><b>¡Hola</b> {{userName}}!</span></ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <ul>
@@ -130,6 +130,47 @@
       </ion-card>
     </div>
 
+    <div id="driver-content-wait" *ngIf="isDriver === 1 && areTraveling === 0 && middleStep === 1">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title><span><b>Buscando un viaje</b></span></ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <span>
+                  <p>Por favor, espere.</p>
+                </span>
+              </ion-col>
+              <ion-col>
+                <ion-spinner name="circular"></ion-spinner>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div id="driver-content-travel" *ngIf="isDriver === 1 && areTraveling === 1 && middleStep === 0">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title><span><b>Viaje de {{ rideName}}</b></span></ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ul>
+            <li><span><b>Direccion de estino: </b>{{ endAddress }}</span></li>
+            <li><span><h3><b>Tiempo de viaje: {{ formatedTime() }}</b></h3></span></li>
+            <li id="contador-tiempo">
+              <span>
+                <h3><b>Valor del viaje: ${{ formatedSeconds() * ourTariff}}</b></h3>
+              </span>
+            </li>  
+          </ul>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
     <div id="user-content-travel" *ngIf="isDriver === 0 && areTraveling === 1 && middleStep === 0">
       <ion-card>
         <ion-card-header>
@@ -139,6 +180,7 @@
           <ul>
             <li><span><b>Conductor: </b>{{ rideName }}</span></li>
             <li><span><b>Direccion Destino: </b>{{ endAddress }}</span></li>
+            <li id="contador-tiempo"><span><h3><b>Tiempo de viaje: {{ formatedTime() }}</b></h3></span></li>
             </ul>
         </ion-card-content>
       </ion-card>
@@ -158,6 +200,8 @@
         </ion-card-content>
       </ion-card>
     </div>
+
+
     <!-- <div id="timer" *ngIf="areTraveling === 1">
       <ion-row>
         <ion-col>

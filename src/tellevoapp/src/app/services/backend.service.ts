@@ -233,4 +233,7 @@ export class BackendService {
       })
     );
   }
+
+  getAddressFromCoordinates(){}
+  getCoordinatesFromAddress(){}
 }

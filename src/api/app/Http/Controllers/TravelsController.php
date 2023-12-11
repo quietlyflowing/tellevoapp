@@ -145,7 +145,7 @@ class TravelsController extends Controller
             }
             while($exitCounter < 5) {
                 $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' tomado. Dando oportunidad para terminar limpiamente', 
-                'travel_id' => $travelId , 'driver_id'=> $driverName, 'code' => 105], JSON_UNESCAPED_UNICODE);
+                'travel_id' => $travelId , 'driver_name'=> $driverName, 'code' => 105], JSON_UNESCAPED_UNICODE);
                 echo "data: $data2\n\n";
                 ob_flush();
                 flush();
@@ -169,52 +169,45 @@ class TravelsController extends Controller
         if (is_null($travel)) {
             return self::returnJSONBuilder(200, 'Error: Viaje con id ' . $request->query('travel_id') . ' no encontrado.', 255);
         }
-        $response = new StreamedResponse(function() use($travel){
-            $travelId = $travel->id;
-            $driverId = $travel->driver_id;
-            $passengerId= $travel->passenger_id;
-            $driverName = $travel->driver_name;
-            $passengerName = $travel->passsenger_name;
-            $isTaken = $travel->is_taken;
-            $startCoord = $travel->start_coordinates;
-            $tariffValue = $travel->tariff;
-            $exitCounter = 0;
+        $response = new StreamedResponse(function() use($travel, $request){
+            // $travelId = $travel->id;
+            // $driverId = $travel->driver_id;
+            // $passengerId= $travel->passenger_id;
+            // $driverName = $travel->driver_name;
+            // $passengerName = $travel->passsenger_name;
+            // $isTaken = $travel->is_taken;
+            // $startCoord = $travel->start_coordinates;
+            // $tariffValue = $travel->tariff;
+            // $exitCounter = 0;
             while(true){
-                $data = json_encode(['message' => 'Viaje con id ' . $travel->id . ' en curso', 
-                'data' => [
-                    'travel_id' => $travelId, 
-                    'driver_id' => $driverId,
-                    'driver_name' => $driverName,
-                    'is_taken' => $isTaken, 
-                    'passenger_id' => $passengerId,
-                    'passenger_name' => $passengerName,
-                    'tariff' => $tariffValue],
-                'code' => 108,
-                ]);
+                // $data = json_encode(['message' => 'Viaje con id ' . $travel->id . ' en curso', 
+                // 'data' => [
+                //     'travel_id' => $travelId, 
+                //     'driver_id' => $driverId,
+                //     'driver_name' => $driverName,
+                //     'is_taken' => $isTaken, 
+                //     'passenger_id' => $passengerId,
+                //     'passenger_name' => $passengerName,
+                //     'tariff' => $tariffValue],
+                // 'code' => 108,
+                // ]);
+                $data = $travel->toJson(JSON_UNESCAPED_UNICODE);
                 echo "data: $data\n\n";
                 ob_flush();
                 flush();
                 sleep(1);
-                $travel = CurrentTravel::find($travelId);
+                $travel = CurrentTravel::find($request->query('travel_id'));
                 if (is_null($travel)) {
                     break;
                 }
-                $travelId = $travel->id;
-                $driverId = $travel->driver_id;
-                $passengerId= $travel->passenger_id;
-                $isTaken = $travel->is_taken;
+                // $travelId = $travel->id;
+                // $driverId = $travel->driver_id;
+                // $passengerId= $travel->passenger_id;
+                // $isTaken = $travel->is_taken;
             }
             while($exitCounter < 5){
-                $data2 = json_encode(['message' => 'Viaje con id ' . $travelId . ' terminado. Dándo la oportunidad para terminar limpiamente',
-                'data' => [
-                    'travel_id' => $travelId, 
-                    'driver_id' => $driverId,
-                    'driver_name' => $driverName,
-                    'passenger_id' => $passengerId,
-                    'start_coordinates' => $startCoord,
-                    'passenger_name' => $passengerName,
-                    'tariff' => $tariffValue],
-                'code' => 109
+                $data2 = json_encode(['message' => 'Viaje con id ' . $travel->id . ' terminado. Dándo la oportunidad para terminar limpiamente',
+                'data' => $travel->toArray() ,'code' => 109
                 ], JSON_UNESCAPED_UNICODE);
                 echo "data: $data2\n\n";
                 ob_flush();

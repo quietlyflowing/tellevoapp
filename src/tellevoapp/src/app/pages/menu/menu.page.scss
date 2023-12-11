@@ -70,7 +70,13 @@ ion-tab-button {
   --color: #ffffff;
 
 }
-
+#contador-tiempo {
+  color:#F8b31c;
+  font-size: large;
+}
+ion-card-content {
+  padding-inline-start: 0px !important;
+}
 #ourlogo {
   max-width: 20%;
   max-height: 5%;

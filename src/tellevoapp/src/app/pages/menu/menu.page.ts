@@ -43,6 +43,7 @@ export class MenuPage implements OnInit, OnDestroy {
   duocCoords: object = { 'coord_x': 0, 'coord_y': 0 };
   homeAddress: string = '';
   duocAddress: string = '';
+  ourTariff: number = 0;
   public tariffInput = [
     {
       type: 'number',
@@ -134,6 +135,11 @@ export class MenuPage implements OnInit, OnDestroy {
     const minutes = Math.floor((this.time % 3600) / 60);
     const seconds = this.time % 60;
     return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  formatedSeconds(): number{
+    const minutes = Math.floor((this.time)/60);
+    return minutes;
   }
 
   close() {
@@ -239,6 +245,7 @@ export class MenuPage implements OnInit, OnDestroy {
       if (this.message.code === 81) {
         console.log('No hay viajes disponibles. Cerrando');
         this.middleStep = 0;
+        this.cdr.detectChanges();
         this.seekSSE.disconnect();
         this.genericAlertWithoutHeader('No hay viajes disponibles', 'Lo sentimos. Se agotó el tiempo de espera y no hay viajes disponibles. Intente más tarde', ['Entendido']);
       }
@@ -247,12 +254,17 @@ export class MenuPage implements OnInit, OnDestroy {
         this.seekSSE.disconnect();
         console.log('Viaje Encontrado. Suscribiendo al endpoint de monitoreo');
         //@ts-ignore
+        const passenger = this.message.passenger_name;
+        this.rideName = passenger;
+        this.ourTariff = tariff;
+        //@ts-ignore
         this.suscribeToMonitorTravel(this.message.travel_id);
       }
     },
       (error) => {
         console.log(error)
         this.middleStep = 0;
+        this.cdr.detectChanges();
         this.genericAlertWithoutHeader('Error', 'Ocurrió un error inesperado. Por favor intente más tarde.', ['Entendido']);
         throw error;
       });
@@ -274,9 +286,9 @@ export class MenuPage implements OnInit, OnDestroy {
       //@ts-ignore
       if(this.message.code === 105){
         //@ts-ignore
-        const driver = this.message.driver_id;
+        const driver = this.message.driver_name;
         //@ts-ignore
-        console.log(this.message.driver_id);
+        console.log(this.message.driver_name);
         console.log(driver);
         this.rideName = driver;
         this.willSSE.disconnect();
