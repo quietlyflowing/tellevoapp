@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MenuController, IonModal, AlertController, NavParams } from '@ionic/angular';
+import { MenuController, IonModal, AlertController, NavParams, IonicSafeString } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as Leaflet from 'leaflet';
@@ -57,7 +57,15 @@ export class MenuPage implements OnInit, OnDestroy {
       }
     }
   ];
-  public tariffButton = [{
+  public tariffButton = [
+  {
+    text: 'Cancelar',
+    role: 'cancel',
+    handler: () => {
+      console.log('Boton cancelar oprimido. No se inició ningún viaje');
+    }
+  },
+  {
     text: 'Buscar Viaje',
     role: 'start-travel',
     //@ts-ignore
@@ -66,14 +74,8 @@ export class MenuPage implements OnInit, OnDestroy {
       console.log('La tarifa fijada es de ' + tariffInput.tarifValue);
       this.startDriverTravel(tariffInput.tarifValue, this.userId);
     }
-  },
-  {
-    text: 'Cancelar',
-    role: 'cancel',
-    handler: () => {
-      console.log('Boton cancelar oprimido. No se inició ningún viaje');
-    }
-  }]
+  }
+]
   public travelButton = [
     {
       text: 'Casa',
@@ -83,7 +85,7 @@ export class MenuPage implements OnInit, OnDestroy {
         //@ts-ignore
         this.endPlace = 'al Hogar';
         this.endAddress = this.homeAddress;
-        this.startUserTravel(this.homeCoords, this.endAddress);   
+        this.startUserTravel(this.homeCoords, this.endAddress);
       }
     },
     {
@@ -95,7 +97,7 @@ export class MenuPage implements OnInit, OnDestroy {
         //this.startTravelling();
         this.endPlace = 'a DuocUC';
         this.endAddress = this.duocAddress;
-        this.startUserTravel(this.duocCoords, this.endAddress);   
+        this.startUserTravel(this.duocCoords, this.endAddress);
       }
     },
   ];
@@ -139,8 +141,8 @@ export class MenuPage implements OnInit, OnDestroy {
     return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
-  formatedSeconds(): number{
-    const minutes = Math.floor((this.time)/60);
+  formatedSeconds(): number {
+    const minutes = Math.floor((this.time) / 60);
     return minutes;
   }
 
@@ -158,13 +160,22 @@ export class MenuPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  async endTravelAlert(dateString: string, endTariff: number){
+  async finishedTravelAlert(startAddress: string, endAddress: string, totalAmount: string) {
+    const sanitizedMesssage = new IonicSafeString(`
+    <strong>Dirección de inicio:</strong> ${startAddress} <br>
+    <strong>Dirección de destino:</strong> ${endAddress} <br>
+    <strong>Total a pagar: $</strong> ${totalAmount}
+  `)
+    const headerText = `Detalles del viaje a ${endAddress}`
     const alert = await this.alert.create({
-      header: 'Viaje del ' + dateString,
-      message: 'Total a pagar: '+ endTariff,
-      buttons: ['Confirmar pago']
-    })
+      header: headerText,
+      message: sanitizedMesssage,
+      buttons: ['Entendido']
+    });
+
+    await alert.present();
   }
+
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -179,7 +190,7 @@ export class MenuPage implements OnInit, OnDestroy {
     try {
       const position = await Geolocation.getCurrentPosition();
       const answer = await this.backend.getAddressFromCoordinates(position.coords.latitude, position.coords.longitude).toPromise();
-      const address = answer.address.road + ' '+ answer.address.house_number + ', ' + answer.address.suburb;
+      const address = answer.address.road + ' ' + answer.address.house_number + ', ' + answer.address.suburb;
       const data: object = {
         'passenger_name': this.userName,
         'start_coordinates': {
@@ -198,7 +209,7 @@ export class MenuPage implements OnInit, OnDestroy {
           //@ts-ignore
           const travelId = response?.data.travel_id;
           this.myTravelId = travelId;
-         // this.areTraveling = 1;
+          // this.areTraveling = 1;
           console.log('Viaje publicado. ID del viaje: ' + this.myTravelId);
           console.log('Escuchando respuesta de algún conductor.');
           this.suscribeToWillBePickedUp(this.userId);
@@ -230,11 +241,11 @@ export class MenuPage implements OnInit, OnDestroy {
     const monitorSuscription = this.monitorSSE.connect(travelNumber).subscribe((event: MessageEvent) => {
       this.message = JSON.parse(event.data);
       //@ts-ignore
-      this.endAddress =  this.message.end_direction;
+      this.endAddress = this.message.end_direction;
       this.areTraveling = 1;
       this.middleStep = 0;
       this.time++;
-      
+
       //@ts-ignore
       this.ourTariff = this.message.tariff;
       internalTariff = this.ourTariff
@@ -245,14 +256,16 @@ export class MenuPage implements OnInit, OnDestroy {
       //@ts-ignore
       if (this.message.code === 109) {
         const lastTime = this.time;
-        const lastMessage =  this.message;
+        const lastMessage = this.message;
         monitorSuscription.unsubscribe()
         console.log('Desuscribiendo del viaje');
         this.monitorSSE.disconnect();
         console.log(lastMessage);
         //@ts-ignore
-        console.log(lastMessage.data.updated_at) 
-        console.log(lastTime) 
+        console.log(lastMessage.data.updated_at)
+        //@ts-ignore
+        this.finishedTravelAlert(lastMessage.data.start_direction, lastMessage.data.end_direction, Math.floor(lastTime / 60) * lastMessage.data.tariff);
+        console.log(lastTime)
         //@ts-ignore
         console.log(lastMessage.data.tariff);
         //@ts-ignore 
@@ -270,6 +283,9 @@ export class MenuPage implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       });
   }
+
+
+
 
   suscribeToSeekTravel(tariff: number, userId: number) {
     this.middleStep = 1;
@@ -306,13 +322,13 @@ export class MenuPage implements OnInit, OnDestroy {
       });
   }
 
-  suscribeToWillBePickedUp(userId: number){
+  suscribeToWillBePickedUp(userId: number) {
     console.log('Escuchando si un conductor escoje el viaje');
-    this.willSSE.connect(userId).subscribe((event: MessageEvent)=>{
+    this.willSSE.connect(userId).subscribe((event: MessageEvent) => {
       this.message = JSON.parse(event.data);
       console.log(this.message);
       //@ts-ignore
-      if(this.message.code === 81){
+      if (this.message.code === 81) {
         console.log('Ningún conductor ha tomado el viaje. Cerrando');
         this.middleStep = 0;
         this.cdr.detectChanges();
@@ -320,7 +336,7 @@ export class MenuPage implements OnInit, OnDestroy {
         this.genericAlertWithoutHeader('No hay conductores disponibles', 'Lo sentimos. Se agotó el tiempo de espera y no hay conductores disponibles. Intente más tarde', ['Entendido']);
       }
       //@ts-ignore
-      if(this.message.code === 105){
+      if (this.message.code === 105) {
         //@ts-ignore
         const driver = this.message.driver_name;
         //@ts-ignore
@@ -332,7 +348,7 @@ export class MenuPage implements OnInit, OnDestroy {
         //@ts-ignore
         this.suscribeToMonitorTravel(this.message.travel_id);
       }
-    },(error)=>{
+    }, (error) => {
       console.log(error)
       this.middleStep = 0;
       this.cdr.detectChanges();
@@ -343,21 +359,21 @@ export class MenuPage implements OnInit, OnDestroy {
 
   async stopTravelling() {
     this.middleStep = 0;
-      console.log('Solicitando el fin del viaje')
-      try {
-        const data: object = {
-          'is_driver': this.isDriver,
-          'travel_id': this.myTravelId,
-        }
-        this.backend.deleteTravel(data).toPromise()
-          .then((response) => {
-            console.log(response);
-            this.areTraveling = 0;
-          })
-      } catch (error) {
-        console.log(error)
-        throw error;
+    console.log('Solicitando el fin del viaje')
+    try {
+      const data: object = {
+        'is_driver': this.isDriver,
+        'travel_id': this.myTravelId,
       }
+      this.backend.deleteTravel(data).toPromise()
+        .then((response) => {
+          console.log(response);
+          this.areTraveling = 0;
+        })
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
   }
 
   toggleMenu() {
@@ -415,17 +431,36 @@ export class MenuPage implements OnInit, OnDestroy {
     this.travelCount = this.travelsArray.length;
   }
 
-  closeSession(): void {
-    if(this.areTraveling === 1) {
-      this.stopTravelling();
-    }
-    if(this.middleStep === 1){
-      this.seekSSE.disconnect();
-      this.monitorSSE.disconnect();
-    }
-    this.map.remove();
-    this.router.navigate(['/inicio']);
-    this.auth.closeSession();
+
+  async closeSession(){
+    const alert = await this.alert.create({
+      header: 'Confirme por favor',
+      message: '¿Desea cerrar su sesión?',
+      buttons: [ {
+        text: 'No',
+        handler: () => {
+          console.log('No se ha cancelado el viaje')
+        }
+      },
+      {
+        text: 'Cerrar Sesión',
+        handler: () => {
+          console.log('Se solicitó cerrar la sesión');
+          if (this.areTraveling === 1) {
+            this.stopTravelling();
+          }
+          if (this.middleStep === 1) {
+            this.seekSSE.disconnect();
+            this.monitorSSE.disconnect();
+          }
+          this.map.remove();
+          this.router.navigate(['/inicio']);
+          this.auth.closeSession();
+        }
+      }],
+    });
+
+    await alert.present();
   }
   ionViewDidEnter() {
     this.leafletMap();
