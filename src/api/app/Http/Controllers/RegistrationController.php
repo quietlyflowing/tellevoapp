@@ -57,7 +57,7 @@ class RegistrationController extends Controller
         }
         try {
             $user->save();
-            $user->datos()->create(['nombre' => DuocMail::where('correo_electronico', $request->email)->first()->nombre, 'telefono' => $request->phone, 'direccion_hogar' => $request->home, 'direccion_duoc' => $request->duoc]);
+            $user->datos()->create(['nombre' => DuocMail::where('correo_electronico', $request->email)->first()->nombre, 'coord_duoc'=>json_encode($request->coord_duoc), 'coord_hogar' =>json_encode($request->coord_hogar), 'telefono' => $request->phone, 'direccion_hogar' => $request->home, 'direccion_duoc' => $request->duoc]);
             $user->question()->create(['question' => $request->question, 'answer' => $request->answer]); 
             if ($user->IS_DRIVER === 1) {
                 $user->vehiculos()->create(['patente' => $request->patente, 'modelo' => $request->modelo, 'año' => $request->año]);
