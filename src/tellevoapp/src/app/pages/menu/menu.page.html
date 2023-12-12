@@ -163,9 +163,10 @@
         </ion-card-content>
       </ion-card>
     </div>
-    <h2>Tu ubicación:</h2>
-    <div id="mapa-principal"> <!-- DIV del mapa. No tocar-->
+    <h2>Tu ubicación</h2>
+      <div id="mapa-principal" style="height: 100%; position: relative; z-index: -3"> <!-- DIV del mapa. No tocar-->
     </div>
+    
     <ion-tabs>
       <ion-tab-bar slot="bottom">
         <ion-tab-button id="user-travel" *ngIf="isDriver === 0 && areTraveling === 0 && middleStep === 0">
