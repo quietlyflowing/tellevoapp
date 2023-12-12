@@ -462,8 +462,10 @@ export class MenuPage implements OnInit, OnDestroy {
 
     await alert.present();
   }
+
+
   ionViewDidEnter() {
-    this.leafletMap();
+   this.leafletMap();
   } //<=Esto sirve para que el mapa pueda cargarse correctamente. ngOnInit solo no sirve.
 
   leafletMap() { //<= Todo esto crea e inserta el mapa en la página principal del menú
@@ -478,7 +480,21 @@ export class MenuPage implements OnInit, OnDestroy {
     );
     this.map = Leaflet.map('mapa-principal', { center: [this.geoData.coords.latitude, this.geoData.coords.longitude], zoom: 16, attributionControl: false });
     Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-    Leaflet.marker([this.geoData.coords.latitude, this.geoData.coords.longitude], { icon: icono }).addTo(this.map).bindPopup('Ubicación actual'); //
+    const marker = Leaflet.marker([this.geoData.coords.latitude, this.geoData.coords.longitude], { icon: icono }).addTo(this.map).bindPopup('Ubicación actual'); //
+    setInterval(
+    async() =>{
+        try{
+          console.log('Actualizando mapa...')
+          const coordinates = await Geolocation.getCurrentPosition();
+          console.log('Latitud: '+ coordinates.coords.latitude + ' Longitud: '+ coordinates.coords.longitude)
+          this.map.setView([coordinates.coords.latitude, coordinates.coords.longitude]);
+          marker.setLatLng([coordinates.coords.latitude, coordinates.coords.longitude]);
+          console.log('Mapa actualizado');
+        } catch(error){
+          console.log('Error: No se pudo actualizar el mapa')
+          throw error;
+        }
+      }, 2000);
   }
 
 
