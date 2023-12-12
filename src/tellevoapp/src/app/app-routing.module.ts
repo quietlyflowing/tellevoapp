@@ -42,13 +42,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sobre-nosotros/sobre-nosotros.module').then( m => m.SobreNosotrosPageModule)
   },
   {
-    path: 'recovery-two',
-    resolve: {
-        resolvedData: IntraPageDataService
-    },
-    loadChildren: () => import('./recovery-two/recovery-two.module').then( m => m.RecoveryTwoPageModule)
-  },
-  {
     path: 'registro-data',
     resolve: {resolvedData: IntraPageDataService},
     loadChildren: () => import('./pages/registro-data/registro-data.module').then( m => m.RegistroDataPageModule)
