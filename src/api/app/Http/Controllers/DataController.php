@@ -19,6 +19,10 @@ class DataController extends Controller
            $data = $user->with('datos', 'vehiculos', 'travels')->get()->toArray();
            $data[0]['datos']['coord_duoc'] = json_decode($data[0]['datos']['coord_duoc'], true);
            $data[0]['datos']['coord_hogar'] = json_decode($data[0]['datos']['coord_hogar'], true);
+           foreach($data[0]['travels'] as $k => $v){
+            $data[0]['travels'][$k]['from_coord'] = json_decode($v['from_coord'], true);
+            $data[0]['travels'][$k]['to_coord'] = json_decode($v['to_coord'], true);
+        }
             return self::returnJSONBuilder(200, 'Registro Solicitado Encontrado', 0, $data);
         } 
         $data = $user->with('datos', 'travels')->get()->toArray();
