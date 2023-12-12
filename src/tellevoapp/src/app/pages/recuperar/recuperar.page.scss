@@ -105,7 +105,7 @@ ion-select {
     margin-left: 10%;
 }
 
-@media screen and (max-width: 360px) and (max-height: 740px) {
+@media screen and (min-width: 412px ) and (max-width: 412px ) and (max-height: 846px) and (min-height: 846px) {
  .inner-item {
   padding-left:.5rem;
  }

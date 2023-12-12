@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="css/estilos.css">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/js" href="js/notificacion.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title> home </title>
+</head>
+<body>
+    <header class="hero">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <img src="img/TellevoappLogo.png" width="220px" height="35px">
+            </div>
+
+            <ul class="nav__link nav__link--menu">
+                <li class="nav__items">
+                    <a href="#" class="nav__links"> Inicio </a>
+                </li>
+                <li class="nav__items">
+                    <a href="#" class="nav__links"> Nosotros </a>
+                </li>
+                <li class="nav__items">
+                    <a href="#" class="nav__links"> Contacto </a>
+                </li>
+
+                <img src="img/img-principal.png" class="nav__close">
+            </ul>
+
+            <img src="img/img-principal.png" class="nav__close">
+
+            <div class="nav__menu">
+                <img src="img/menu-regular-24.png" class="nav__img">
+            </div>
+        </nav>
+
+        <section class="hero__container container">
+            <h1 class="hero__title"> TeLlevoAPP </h1>
+            <p class="hero__paragraph"> La aplicación de transporte para alumnos de Duoc UC. </p>
+            <button id="botonDescarga" class="cta"> Comienza ahora </button>
+        </section>
+    </header>
+
+    <script>
+        var esDispositivoMovil = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        document.getElementById("botonDescarga").addEventListener("click", function() {
+        mostrarNotificacion();
+        });
+
+        function mostrarNotificacion() {
+            if (esDispositivoMovil) {
+            // Estás en un dispositivo móvil
+            $("#botonDescarga").on("click", function() {
+                // Redirigir al enlace de descarga de la app
+                window.location.href = "enlace_de_descarga_de_la_app";
+            });
+            } else {
+                // Estás en un pc
+                alert("Descarga la App desde Google Play");
+                // Redirigir automáticamente a Google Play
+                window.location.href = "https://play.google.com/store/apps?hl=es_419&gl=US";
+            }
+        }   
+    </script>
+
+    <footer class="footer">
+        <section class="footer__container container">
+            <nav class="nav nav--footer">
+                <img src="img/TellevoappLogo.png" width="170px" height="27px">
+
+                <ul class="nav__link nav__link--footer">
+                    <li class="nav__items">
+                        <a href="#" class="nav__links"> Inicio </a>
+                    </li>
+                    <li class="nav__items">
+                        <a href="#" class="nav__links"> Nosotros </a>
+                    </li>
+                    <li class="nav__items">
+                        <a href="#" class="nav__links"> Contacto </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <form class="footer__form" action="#" method="POST">
+                <h2 class="footer__newsletter"> Inicia tu sesión de estudiante </h2>
+                <div class="footer__inputs">
+                    <input type="email" placeholder="Email:" class="footer__input" name="_replyto">
+                    <input type="submit" value="Ingresar" class="footer__submit">
+                </div>
+            </form>
+        </section>
+
+        <section class="footer__copy container">
+            <h4 class="footer__copyright"> Copyright © 2023 - Te Llevo Duoc UC </h4>
+            <h6 class="footer__copyright"> Términos y Condiciones | Seguridad y Privacidad </h6>
+        </section>
+    </footer>
+</body>
+
+</html>

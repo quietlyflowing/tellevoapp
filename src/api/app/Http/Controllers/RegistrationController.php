@@ -144,7 +144,7 @@ class RegistrationController extends Controller
             DB::rollBack();
             return self::returnJSONBuilder(500, $e->getMessage(), 255);
         }
-            return self::returnJSONBuilder(200, 'Contraseña cambiada correctamente', 255);
+            return self::returnJSONBuilder(200, 'Contraseña cambiada correctamente', 66);
     }
 
     public function checkQuestion(Request $request){
@@ -175,7 +175,7 @@ class RegistrationController extends Controller
         $url = action([RegistrationController::class, 'updatePassword']);
         $hash = $randomHash;
         $returnArray = ['url' => $url, 'hash' => $hash];
-        return self::returnJSONBuilder(200, 'Permiso para cambiar contraseña generado correctamente. Válido hasta ' . $validUntil->toDateTimeString(), 255, $returnArray);
+        return self::returnJSONBuilder(200, 'Permiso para cambiar contraseña generado correctamente. Válido hasta ' . $validUntil->toDateTimeString(), 18, $returnArray);
     }
 
     public function returnQuestions(){
