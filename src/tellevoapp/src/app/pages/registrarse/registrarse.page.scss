@@ -119,3 +119,9 @@ ion-menu {
   font-size: 85%;
   font-weight: bold;
 }
+
+@media screen and (min-width: 360px ) and (max-width: 360px ) and (max-height: 740px) and (min-height: 740px) {
+  .bigtext {
+    font-size: 125%;
+  }
+}

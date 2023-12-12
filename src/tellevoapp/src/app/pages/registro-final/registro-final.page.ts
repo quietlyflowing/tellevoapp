@@ -27,6 +27,7 @@ export class RegistroFinalPage implements OnInit {
   confirmPassword: string = '';
   form: any = '';
   email: string = '';
+  registerProcess: number = 0;
 
   formValidated(): boolean | object {
     let var1, var2, var3: boolean;
@@ -102,6 +103,15 @@ export class RegistroFinalPage implements OnInit {
     }
   }
 
+// async register(){
+//   try{
+//     const response = await this.backend.getCoordinatesFromAddress(this.form.home).toPromise();
+//     console.log(response[0].lat);
+//   } catch(error) {
+//     throw error;
+//   }
+// }
+
   async register(){
     // {
     //   "email": "ju.perezg@duocuc.cl",
@@ -114,45 +124,67 @@ export class RegistroFinalPage implements OnInit {
     //   "modelo": "Chevrolet Cacharro",
     //   "año": 2023,
     //   "question": 0,
-    //   "answer": "Cosito"
+    //   "answer": "Cosito",
+    //   "coord_duoc": {
+    //      "coord_x": 33.9984,
+    //      "coord_y": 70.9938
+    //    },
+    //    "coord_hogar":{
+    //      "coord_x": 99.8854,
+    //      "coord_y": 85.9999
+    //     }
     // }
-  
+    
     const validatedForm = this.formValidated();
     if(typeof(validatedForm)==='object'){
-      let registerForm: object;
-      if(this.form.isDriver === 0){
-        registerForm = {
-          email: this.form.email,
-          password: this.password,
-          phone: this.form.phone,
-          duoc: this.form.duoc,
-          home: this.form.home,
-          question: this.question,
-          answer: this.answer,
-          driver: this.form.isDriver
-        }
-      } else {
-        registerForm = {
-          email: this.form.email,
-          password: this.password,
-          phone: this.form.phone,
-          duoc: this.form.duoc,
-          home: this.form.home,
-          question: this.question,
-          answer: this.answer,
-          driver: this.form.isDriver,
-          patente: this.form.patente
-        }
-      }
+      this.registerProcess = 1;  
       try{
+        const resultHogar = await this.backend.getCoordinatesFromAddress(this.form.home).toPromise();
+        const coordHogar: object = {coord_x: resultHogar[0].lat, coord_y: resultHogar[0].lon }
+        const resultDuoc = await this.backend.getCoordinatesFromAddress(this.form.duoc).toPromise();
+        const coordDuoc: object = {coord_x: resultDuoc[0].lat, coord_y: resultDuoc[0].lon }
+        console.log(coordHogar);
+        console.log(coordDuoc);
+        let registerForm: object;
+        if(this.form.isDriver === 0){
+          registerForm = {
+            email: this.form.email,
+            password: this.password,
+            phone: this.form.phone,
+            duoc: this.form.duoc,
+            home: this.form.home,
+            question: this.question,
+            answer: this.answer,
+            driver: this.form.isDriver,
+            coord_duoc: coordDuoc,
+            coord_hogar: coordHogar  
+          }
+        } else {
+          registerForm = {
+            email: this.form.email,
+            password: this.password,
+            phone: this.form.phone,
+            duoc: this.form.duoc,
+            home: this.form.home,
+            question: this.question,
+            answer: this.answer,
+            driver: this.form.isDriver,
+            patente: this.form.patente,
+            coord_duoc: coordDuoc,
+            coord_hogar: coordHogar  
+          }
+        }
+        console.log(registerForm);
         const response = await this.backend.registerNewUser(registerForm).toPromise();
         if(response?.code === 6){
           console.log(response);
+          this.registerProcess = 0;
           console.log('Registro creado correctamente! Ahora puede iniciar sesión');
           this.messageToast('¡Felicidades¡ ¡Se ha registrado correctamente!');
           this.router.navigate(['inicio/']);
         } else{
           console.log(response);
+          this.registerProcess = 0;
           this.messageToast('Error de registro');
           this.router.navigate(['inicio/']);
         }

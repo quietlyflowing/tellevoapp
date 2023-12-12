@@ -17,8 +17,8 @@ class DataController extends Controller
         $user = User::where('id', '=', $pk);
         if($checkUser->IS_DRIVER === 1) {
            $data = $user->with('datos', 'vehiculos', 'travels')->get()->toArray();
-           $data[0]['datos']['coord_duoc'] = json_decode($data[0]['datos']['coord_duoc']);
-           $data[0]['datos']['coord_hogar'] = json_decode($data[0]['datos']['coord_hogar']);
+           $data[0]['datos']['coord_duoc'] = json_decode($data[0]['datos']['coord_duoc'], true);
+           $data[0]['datos']['coord_hogar'] = json_decode($data[0]['datos']['coord_hogar'], true);
             return self::returnJSONBuilder(200, 'Registro Solicitado Encontrado', 0, $data);
         } 
         $data = $user->with('datos', 'travels')->get()->toArray();

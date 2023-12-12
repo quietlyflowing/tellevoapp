@@ -45,6 +45,7 @@ export class MenuPage implements OnInit, OnDestroy {
   homeAddress: string = '';
   duocAddress: string = '';
   ourTariff: number = 0;
+  isModalTravelOpen: boolean = false;
   public tariffInput = [
     {
       type: 'number',
@@ -254,10 +255,6 @@ export class MenuPage implements OnInit, OnDestroy {
         console.log(lastTime) 
         //@ts-ignore
         console.log(lastMessage.data.tariff);
-        //@ts-ignore
-        this.genericAlertWithoutHeader('Viaje a ' + lastMessage.data.end_direction, 
-        //@ts-ignore
-        'Fueron '+ lastTime + 'segundos y con un valor de '+ String(Math.floor(lastTime/60)*lastMessage.data.tarriff), ['Entendido']);
         //@ts-ignore 
         this.areTraveling = 0;
         this.middleStep = 0;
@@ -348,17 +345,9 @@ export class MenuPage implements OnInit, OnDestroy {
     this.middleStep = 0;
       console.log('Solicitando el fin del viaje')
       try {
-        const position = await Geolocation.getCurrentPosition();
         const data: object = {
           'is_driver': this.isDriver,
-          'end_coordinates': {
-            'coord_x': position.coords.latitude,
-            'coord_y': position.coords.longitude
-          },
-          'total_payment': this.time * 90,
-          'payment_type': 1,
           'travel_id': this.myTravelId,
-          'driver_id': 1,
         }
         this.backend.deleteTravel(data).toPromise()
           .then((response) => {
@@ -413,8 +402,8 @@ export class MenuPage implements OnInit, OnDestroy {
     console.log('ID de usuario: ' + this.userId);
     console.log(this.resolvedData.data[0]);
     this.userName = this.resolvedData.data[0].datos.nombre;
-    this.duocCoords = { ...this.resolvedData.data[0].datos.cord_duoc };
-    this.homeCoords = { ...this.resolvedData.data[0].datos.cord_hogar };
+    this.duocCoords = { ...this.resolvedData.data[0].datos.coord_duoc };
+    this.homeCoords = { ...this.resolvedData.data[0].datos.coord_hogar };
     this.duocAddress = this.resolvedData.data[0].datos.direccion_duoc;
     this.homeAddress = this.resolvedData.data[0].datos.direccion_hogar;
     console.log(this.duocCoords);

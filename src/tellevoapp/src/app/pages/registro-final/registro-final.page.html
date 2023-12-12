@@ -34,5 +34,11 @@
         <ion-button expand="full" *ngIf="imCreating===false" (click)="recover()">Recuperar</ion-button>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="registerProcess===1">
+      <ion-col>
+        Registrándose, espere un momento.
+        <ion-spinner name="circular"></ion-spinner>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

@@ -1,63 +1,56 @@
 
 
 <ion-menu contentId="main-content">
-  <ion-list>
-      <ion-img id="our-logo-menu" src="assets/img/TellevoappLogo.png"></ion-img>
-      <ion-card>
-        <ion-card-content>
-          <ion-card-title>
-            ¡Hola, {{userName}}!
-          </ion-card-title>
-          <span>Tus viajes: {{travelCount}}</span>
-        </ion-card-content>
-      </ion-card>
-    <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeData()">
-      <ion-icon name="log-out-outline"></ion-icon>
-      <span>Cambiar Datos Personales</span>
-      <ion-ripple-effect></ion-ripple-effect>
-    </ion-item>
-    <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeVehicleData()" *ngIf="isDriver===1">
-      <ion-icon name="list" class="bar-button"></ion-icon>
-      <span>Cambiar Datos del Vehículo</span>
-      <ion-ripple-effect></ion-ripple-effect>
-    </ion-item>
-    <ion-item class="ion-activatable ripple-parent circle" *ngIf="isDriver===0">
-      <ion-icon name="car-outline"></ion-icon>
-      <span>¡Quiero ser conductor!</span>
-      <ion-ripple-effect></ion-ripple-effect>
-    </ion-item>
-    <ion-item class="ion-activatable ripple-parent circle" *ngIf="isDriver===1">
-      <ion-icon name="car-outline"></ion-icon>
-      <span>¡Quiero viajar!</span>
-      <ion-ripple-effect></ion-ripple-effect>
-    </ion-item>
-    <ion-item class="ion-activatable ripple-parent circle">
-      <ion-icon name="apps-outline"></ion-icon>
-      <span>Funcionalidades de la app</span>
-      <ion-ripple-effect></ion-ripple-effect>
-    </ion-item>
-    <ion-item class="ion-activatable ripple-parent circle" (click)="goToSobreNosotros()">
-      <ion-icon name="people-circle-outline"></ion-icon>
-      <span>Sobre Nosotros</span>
-      <ion-ripple-effect></ion-ripple-effect>
-    </ion-item>
-    <!-- <ion-item id="close-session-menu" class="ion-activatable ripple-parent circle" (click)="closeSession()">
-      <ion-icon name="log-out-outline"></ion-icon>
-      <span>Cerrar Sesión</span>
-      <ion-ripple-effect></ion-ripple-effect>
-    </ion-item> -->
-  </ion-list>
-  <ion-tabs>
-    <ion-tab-bar>
-      <ion-tab-button (click)="closeSession()">
+  <ion-header>
+    <ion-img id="our-logo-menu" src="assets/img/TellevoappLogo.png"></ion-img>
+    <ion-card>
+      <ion-card-content>
+        <ion-card-title>
+          ¡Hola, {{userName}}!
+        </ion-card-title>
+        <span>Tus viajes: {{travelCount}}</span>
+      </ion-card-content>
+    </ion-card>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-list>
+      <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeData()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        <span>Cambiar Datos Personales</span>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+      <ion-item class="ion-activatable ripple-parent circle" (click)="goToChangeVehicleData()" *ngIf="isDriver===1">
+        <ion-icon name="list" class="bar-button"></ion-icon>
+        <span>Cambiar Datos del Vehículo</span>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+      <ion-item class="ion-activatable ripple-parent circle" *ngIf="isDriver===0">
+        <ion-icon name="car-outline"></ion-icon>
+        <span>¡Quiero ser conductor!</span>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+      <ion-item class="ion-activatable ripple-parent circle" *ngIf="isDriver===1">
+        <ion-icon name="car-outline"></ion-icon>
+        <span>¡Quiero viajar!</span>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+      <ion-item class="ion-activatable ripple-parent circle">
+        <ion-icon name="apps-outline"></ion-icon>
+        <span>Funcionalidades de la app</span>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+      <ion-item class="ion-activatable ripple-parent circle" (click)="goToSobreNosotros()">
+        <ion-icon name="people-circle-outline"></ion-icon>
+        <span>Sobre Nosotros</span>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+      <ion-item class="ion-activatable ripple-parent circle" (click)="closeSession()">
         <ion-icon name="log-out-outline" class="bar-button"></ion-icon>
-        <span>Cerrar Sesión</span>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
-
+      <span>Cerrar Sesión</span>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-menu>
-
 
 <div class="ion-page" id="main-content">
   <ion-header>
@@ -170,15 +163,6 @@
         </ion-card-content>
       </ion-card>
     </div>
-
-
-    <!-- <div id="timer" *ngIf="areTraveling === 1">
-      <ion-row>
-        <ion-col>
-          <h1><b>Tiempo de viaje: {{ formatedTime() }}</b></h1>
-        </ion-col>
-      </ion-row>
-    </div> -->
     <h2>Tu ubicación:</h2>
     <div id="mapa-principal"> <!-- DIV del mapa. No tocar-->
     </div>
