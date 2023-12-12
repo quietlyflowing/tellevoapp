@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('telefono',9);
             $table->string('direccion_hogar');
             $table->string('direccion_duoc');
-           $table->json('cord_hogar');
-           $table->json('cord_duoc');
+           $table->json('coord_hogar');
+           $table->json('coord_duoc');
             $table->timestamps();
         });
     }

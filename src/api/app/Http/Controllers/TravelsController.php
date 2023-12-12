@@ -230,43 +230,34 @@ class TravelsController extends Controller
 
     public function stopTravel(Request $request)
     {
-        // {
-        //  "from_coord" : {
-        //  "coord_x": 33.123,
-        //  "coord_y": 88.125
-        //    },
-        //  "to_coord": {
-        //      "coord_x": 33.123,
-        //      "coord_y": 88.125
-        //    },
-        //   "total_payment": 15800,
-        //   "payment_type": 1, 
-        //   "travel_id": 1
-        // }
-
         $travel = CurrentTravel::where('id', $request->travel_id);
         switch($request->is_driver) {
             
             case 0:
                 DB::beginTransaction();
                 try {
-                    
                     $travel = $travel->where('passenger_id', '=', $request->user()->id)->firstOrFail();
-                    // $travelHistoryUser = TravelHistory::create([
-                    // 'user_id' => $request->user()->id, 
-                    // 'from_coord' => $travel->start_coordinates, 
-                    // 'to_coord' => json_encode($request->end_coordinates),
-                    // 'transport_user' => UserData::where('user_id', '=', $travel->driver_id)->firstOrFail()->nombre,
-                    // 'total_payment' => $request->total_payment,
-                    // 'payment_type' => $request->payment_type]);
-                    // $travelHistoryDriver = TravelHistory::create([
-                    // 'user_id' => $travel->driver_id, 
-                    // 'from_coord' => $travel->start_coordinates, 
-                    // 'to_coord' => json_encode($request->end_coordinates),
-                    // 'transport_user' => UserData::where('user_id', '=', $travel->driver_id)->firstOrFail()->nombre,
-                    // 'total_payment' => $request->total_payment,
-                    // 'payment_type' => $request->payment_type
-                    // ]);
+                    $fromArrayToEncode = [...json_decode($travel->start_coordinates, true)];
+                    $fromArrayToEncode['address'] =  $travel->start_direction;
+                    $toArrayToEncode = [...json_decode($travel->end_coordinates, true)];
+                    $toArrayToEncode['address'] = $travel->end_direction;
+                    $totalPayment = $travel->tariff * (\Carbon\Carbon::now()->diffInMinutes(\Carbon\Carbon::parse($travel->updated_at)));
+                    $passengerRecord = TravelHistory::create([
+                         'user_id' => $travel->passenger_id,
+                         'from_coord' =>  json_encode($fromArrayToEncode,JSON_UNESCAPED_UNICODE),
+                         'to_coord' => json_encode($toArrayToEncode, JSON_UNESCAPED_UNICODE),
+                         'transport_user' => $travel->driver_name,
+                         'total_payment' => $totalPayment,
+                         'payment_type' => 1,
+                     ]); //=<registro para el usuario pasajero
+                     $driverRecord = TravelHistory::create([
+                        'user_id' => $travel->driver_id,
+                        'from_coord' =>  json_encode($fromArrayToEncode,JSON_UNESCAPED_UNICODE),
+                        'to_coord' => json_encode($toArrayToEncode, JSON_UNESCAPED_UNICODE),
+                        'transport_user' => $travel->passenger_name,
+                        'total_payment' => $totalPayment,
+                        'payment_type' => 1,
+                    ]); //=<registro para el usuario conductor
                     $travel->delete();
                     DB::commit();
                 } catch (Exception $e) {
@@ -278,22 +269,27 @@ class TravelsController extends Controller
                 DB::beginTransaction();
                 try {
                     $travel = $travel->where('driver_id', '=', $request->user()->id)->firstOrFail();
-                    
-                    // $travelHistoryUser = TravelHistory::create([
-                    //     'user_id' => $request->user()->id, 
-                    //     'from_coord' => $travel->start_coordinates, 
-                    //     'to_coord' => json_encode($request->end_coordinates),
-                    //     'transport_user' => UserData::where('user_id', '=', $travel->driver_id)->firstOrFail()->nombre,
-                    //     'total_payment' => $request->total_payment,
-                    //     'payment_type' => $request->payment_type]);
-                    //     $travelHistoryDriver = TravelHistory::create([
-                    //     'user_id' => $travel->user_id, 
-                    //     'from_coord' => $travel->start_coordinates, 
-                    //     'to_coord' => json_encode($request->end_coordinates),
-                    //     'transport_user' => UserData::where('user_id', '=', $travel->passenger_id)->firstOrFail()->nombre,
-                    //     'total_payment' => $request->total_payment,
-                    //     'payment_type' => $request->payment_type
-                    //     ]);
+                    $fromArrayToEncode = [...json_decode($travel->start_coordinates, true)];
+                    $fromArrayToEncode['address'] =  $travel->start_direction;
+                    $toArrayToEncode = [...json_decode($travel->end_coordinates, true)];
+                    $toArrayToEncode['address'] = $travel->end_direction;
+                    $totalPayment = $travel->tariff * (\Carbon\Carbon::now()->diffInMinutes(\Carbon\Carbon::parse($travel->updated_at)));
+                    $passengerRecord = TravelHistory::create([
+                         'user_id' => $travel->passenger_id,
+                         'from_coord' =>  json_encode($fromArrayToEncode,JSON_UNESCAPED_UNICODE),
+                         'to_coord' => json_encode($toArrayToEncode, JSON_UNESCAPED_UNICODE),
+                         'transport_user' => $travel->driver_name,
+                         'total_payment' => $totalPayment,
+                         'payment_type' => 1,
+                     ]); //=<registro para el usuario pasajero
+                     $driverRecord = TravelHistory::create([
+                        'user_id' => $travel->driver_id,
+                        'from_coord' =>  json_encode($fromArrayToEncode,JSON_UNESCAPED_UNICODE),
+                        'to_coord' => json_encode($toArrayToEncode, JSON_UNESCAPED_UNICODE),
+                        'transport_user' => $travel->passenger_name,
+                        'total_payment' => $totalPayment,
+                        'payment_type' => 1,
+                    ]); //=<registro para el usuario pasajero
                     $travel->delete();
                     DB::commit();
                 } catch (Exception $e) {
