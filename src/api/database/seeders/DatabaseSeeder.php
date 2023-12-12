@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
 
         $user = [
             [
-                'id' => 1,
                 'email' => 'du.mmy@duocuc.cl',
                 'password' => '$2y$10$lRHG.EfczKprn4ZzhDoC2OLOEfH0MQ5U2G/l8wxGJRAEEjbE.7sAG',
                 'IS_DRIVER' => 0,
@@ -49,7 +48,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => \Carbon\Carbon::now()
             ],
             [
-                'id' => 2,
                 'email' => 'te.st@duocuc.cl',
                 'password' => '$2y$10$kPHHExvqmQKUiJ9.2gs7iOgv3TWF4ifu.tP3qsz3A4fmPgRI1dsVm',
                 'IS_DRIVER' => 1,
