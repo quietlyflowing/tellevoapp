@@ -216,11 +216,14 @@ export class MenuPage implements OnInit, OnDestroy {
         })
         .catch((mistake) => {
           console.log(mistake)
-          this.genericAlertWithoutHeader('Error', 'Ocurrió un error inesperado. Por favor intente más tarde.', ['Entendido']);
-          throw mistake;
+          this.middleStep = 0;
+         // this.genericAlertWithoutHeader('Error', 'Ocurrió un error inesperado. Por favor intente más tarde.', ['Entendido']);
+         this.genericAlertWithoutHeader('Error', String(mistake), ['Entendido']); 
+         throw mistake;
         })
     } catch (error) {
       console.log(error)
+      this.middleStep = 0;
       this.genericAlertWithoutHeader('Error', 'Ocurrió un error inesperado. Por favor intente más tarde.', ['Entendido']);
       throw error;
     }

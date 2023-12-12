@@ -57,7 +57,7 @@
   </ion-header>
   <ion-content class="menu-fondo">
     <ion-img src="assets/img/TellevoappLogo.png" id="ourlogo"></ion-img>
-    <div id="user-content-idle" *ngIf="isDriver === 0 && areTraveling === 0 && middleStep === 0">
+    <div id="user-content-idle" style="position: relative; z-index: -2;" *ngIf="isDriver === 0 && areTraveling === 0 && middleStep === 0">
       <ion-card>
         <ion-card-header>
           <ion-card-title><span><b>¡Hola</b> {{userName}}!</span></ion-card-title>
